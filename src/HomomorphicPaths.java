@@ -1,8 +1,14 @@
+import java.io.IOException;
 import java.lang.*;
-import java.math.*;
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
 
-public class Paths {
+public class HomomorphicPaths {
 
      static class BigIntPoint
      {
@@ -83,32 +89,61 @@ public class Paths {
 
           return false;
      }
+
+     public static ArrayList<BigIntPoint> parseString(String input) {
+          ArrayList<BigIntPoint> result = new ArrayList<>();
+
+          // Define a regex pattern for extracting pairs of numbers within parentheses
+          Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
+
+          // Use a Matcher to find matches in the input string
+          Matcher matcher = pattern.matcher(input);
+
+          // Iterate through the matches and extract BigInteger values
+          while (matcher.find()) {
+               String group1 = matcher.group(1);
+               String group2 = matcher.group(2);
+
+               BigIntPoint pair = new BigIntPoint(new BigInteger(group1), new BigInteger(group2));
+
+               result.add(pair);
+          }
+
+          return result;
+     }
     public static void main (String[] args) {
          ArrayList<BigIntPoint> ownroute = new ArrayList<BigIntPoint>();
          ArrayList<BigIntPoint> cryptroute = new ArrayList<BigIntPoint>();
 
-         // Clumsy way to build drones routes, probably update to allow user input
-         BigInteger xone = BigInteger.valueOf(25);
-         BigInteger yone = BigInteger.valueOf(25);
-         BigInteger xtwo = BigInteger.valueOf(-25);
-         BigInteger ytwo = BigInteger.valueOf(-25);
-         BigIntPoint firstpoint = new BigIntPoint(xone,yone);
-         BigIntPoint secondpoint = new BigIntPoint(xtwo,ytwo);
+         String ownroutefile = "ownroutefile.txt";
+         String cryptroutefile = "cryptroutefile.txt";
 
-         //Clumsily building the cryptroute
-         BigInteger cxone = BigInteger.valueOf(-25);
-         BigInteger cyone = BigInteger.valueOf(25);
-         BigInteger cxtwo = BigInteger.valueOf(25);
-         BigInteger cytwo = BigInteger.valueOf(-25);
-         BigIntPoint cfirstpoint = new BigIntPoint(cxone,cyone);
-         BigIntPoint csecondpoint = new BigIntPoint(cxtwo,cytwo);
 
-         //Assemble BigInt "points" into ArrayList
-         ownroute.add(firstpoint);
-         ownroute.add(secondpoint);
+         Scanner scanner = null;
+         String ownrouteinput = null;
+         String cryptrouteinput = null;
 
-         cryptroute.add(cfirstpoint);
-         cryptroute.add(csecondpoint);
+         try {
+              scanner = new Scanner(Paths.get(ownroutefile), StandardCharsets.UTF_8.name());
+              ownrouteinput = scanner.useDelimiter("\\A").next();
+              scanner.close();
+         } catch (IOException e) {
+              System.err.println("An IOException occurred: " + e.getMessage());
+              e.printStackTrace();
+         }
+
+         try {
+              scanner = new Scanner(Paths.get(cryptroutefile), StandardCharsets.UTF_8.name());
+              cryptrouteinput = scanner.useDelimiter("\\A").next();
+              scanner.close();
+         } catch (IOException e) {
+              System.err.println("An IOException occurred: " + e.getMessage());
+              e.printStackTrace();
+         }
+
+
+         ownroute = parseString(ownrouteinput);
+         cryptroute = parseString(cryptrouteinput);
 
 
          //Test for intersection
