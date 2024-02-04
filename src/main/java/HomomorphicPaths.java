@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.lang.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.file.Paths;
@@ -10,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 public class HomomorphicPaths {
 
-     static class BigIntPoint
+     public static class BigIntPoint
      {
           BigInteger x;
           BigInteger y;
@@ -90,8 +91,26 @@ public class HomomorphicPaths {
           return false;
      }
 
-     public static ArrayList<BigIntPoint> parseString(String input) {
-          ArrayList<BigIntPoint> result = new ArrayList<>();
+     // Can you get this to work with multiple lines on each text file?
+     public static List<BigIntPoint> read_all_paths(String file_path) {
+          Scanner scanner;
+          String ownrouteinput = null;
+
+          // TODO: To get good coding practice, look into using the Java equivalent of try with
+          try {
+               scanner = new Scanner(Paths.get(file_path), StandardCharsets.UTF_8);
+               ownrouteinput = scanner.useDelimiter("\\A").next();
+               scanner.close();
+          } catch (IOException e) {
+               System.err.println("An IOException occurred: " + e.getMessage());
+               e.printStackTrace();
+          }
+         return parse_line(ownrouteinput);
+     }
+
+     // TODO: Is this for one line?
+     public static List<BigIntPoint> parse_line(String input) {
+          List<BigIntPoint> result = new ArrayList<>();
 
           // Define a regex pattern for extracting pairs of numbers within parentheses
           Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
@@ -103,52 +122,27 @@ public class HomomorphicPaths {
           while (matcher.find()) {
                String group1 = matcher.group(1);
                String group2 = matcher.group(2);
-
                BigIntPoint pair = new BigIntPoint(new BigInteger(group1), new BigInteger(group2));
-
                result.add(pair);
           }
-
           return result;
      }
-     public static void main (String[] args) {
-          ArrayList<BigIntPoint> ownroute = new ArrayList<BigIntPoint>();
-          ArrayList<BigIntPoint> cryptroute = new ArrayList<BigIntPoint>();
 
+     public static void main (String[] args) {
+          List<BigIntPoint> ownroute;
+          List<BigIntPoint> cryptroute;
+
+          // When this is migarated, we can set a standard file path name.
           String ownroutefile = "ownroutefile.txt";
           String cryptroutefile = "cryptroutefile.txt";
 
+          ownroute = read_all_paths(ownroutefile);
+          cryptroute = read_all_paths(cryptroutefile);
 
-          Scanner scanner = null;
-          String ownrouteinput = null;
-          String cryptrouteinput = null;
-
-          try {
-               scanner = new Scanner(Paths.get(ownroutefile), StandardCharsets.UTF_8.name());
-               ownrouteinput = scanner.useDelimiter("\\A").next();
-               scanner.close();
-          } catch (IOException e) {
-               System.err.println("An IOException occurred: " + e.getMessage());
-               e.printStackTrace();
-          }
-
-          try {
-               scanner = new Scanner(Paths.get(cryptroutefile), StandardCharsets.UTF_8.name());
-               cryptrouteinput = scanner.useDelimiter("\\A").next();
-               scanner.close();
-          } catch (IOException e) {
-               System.err.println("An IOException occurred: " + e.getMessage());
-               e.printStackTrace();
-          }
-
-
-          ownroute = parseString(ownrouteinput);
-          cryptroute = parseString(cryptrouteinput);
-
-
-          //Test for intersection
+          // TODO: Rewrite this to a Boolean, and place this on IntersectTest, on test_intersections
+          // Test for intersection
           for (int i = 0; i < (ownroute.size()-1); i++){
-               for (int j = 0; j < (cryptroute.size()-1); j++){
+               for (int j = 0; j < (cryptroute.size()-1); j++) {
                     if(doIntersect(ownroute.get(i),ownroute.get(i+1),cryptroute.get(j),cryptroute.get(j+1)))
                          System.out.println("Yes");
                }
