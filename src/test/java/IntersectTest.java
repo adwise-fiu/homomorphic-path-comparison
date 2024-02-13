@@ -12,6 +12,12 @@ public class IntersectTest {
     @Test
     public void test_intersections() {
         // TODO: Allan please fill this out of reading the text files. Essentially do the same as main here
+
+
+
+
+        //Below line calls Boolean method, needs two BigIntPoint Lists for input
+        //HomomorphicPaths.pathIntersection()
         assertEquals("hello", "hello");
     }
 
