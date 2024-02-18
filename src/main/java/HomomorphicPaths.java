@@ -134,7 +134,7 @@ public class HomomorphicPaths {
      }
 
      //Boolean function that iterates over two paths looking for intersections
-     public static Boolean pathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
+     public static boolean pathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
           for (int i = 0; i < (mine.size() - 1); i++) {
                for (int j = 0; j < (theirs.size() - 1); j++) {
                     if (doIntersect(mine.get(i), mine.get(i + 1), theirs.get(j), theirs.get(j + 1))) {
