@@ -114,7 +114,6 @@ public class HomomorphicPaths {
           return parse_line(route);
      }
 
-     // TODO: Is this for one line?
      public static List<BigIntPoint> parse_line(String input) {
           List<BigIntPoint> result = new ArrayList<>();
 
@@ -139,11 +138,11 @@ public class HomomorphicPaths {
           for (int i = 0; i < (mine.size() - 1); i++) {
                for (int j = 0; j < (theirs.size() - 1); j++) {
                     if (doIntersect(mine.get(i), mine.get(i + 1), theirs.get(j), theirs.get(j + 1))) {
-                         return Boolean.TRUE;
+                         return true;
                     }
                }
           }
-          return Boolean.FALSE;
+          return false;
      }
      //Returns the two endpoints of the line segment of the unencrypted path where an intersection occurs, otherwise returns (0,0) (0,0)
      public static BigIntPoint [] whereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)

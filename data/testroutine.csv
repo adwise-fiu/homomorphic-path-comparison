@@ -1,4 +1,4 @@
-"ownroute1.txt,cryptroute1.txt"
-"ownroute2.txt,cryptroute2.txt"
-"ownroute3.txt,cryptroute3.txt"
-"ownroute4.txt,cryptroute4.txt"
+data/ownroute1.txt,data/cryptroute1.txt,true
+data/ownroute2.txt,data/cryptroute2.txt,true
+data/ownroute3.txt,data/cryptroute3.txt,true
+data/ownroute4.txt,data/cryptroute4.txt,false
