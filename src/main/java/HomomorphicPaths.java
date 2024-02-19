@@ -145,36 +145,26 @@ public class HomomorphicPaths {
           return false;
      }
      //Returns the two endpoints of the line segment of the unencrypted path where an intersection occurs, otherwise returns (0,0) (0,0)
-     public static BigIntPoint [] whereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)
+     public static List<BigIntPoint> whereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)
      {
-          BigIntPoint[] segment = new BigIntPoint[2];
-          BigIntPoint empty = new BigIntPoint(BigInteger.ZERO,BigInteger.ZERO);
+          List<BigIntPoint> segments = new ArrayList<>();
 
-          for (int i = 0; i < (mine.size()-1); i++) {
-               for (int j = 0; j < (theirs.size()-1); j++) {
+          for (int j = 0; j < (theirs.size()-1); j++) {
+               for (int i = 0; i < (mine.size()-1); i++) {
                     if(doIntersect(mine.get(i),mine.get(i+1),theirs.get(j),theirs.get(j+1))) {
 
-                         segment[0] = mine.get(i);
-                         segment[1] = mine.get(i + 1);
-
-                         return segment;
-                    }
-                    else {
-                           segment[0] = empty;
-                           segment[1] = empty;
-                           return segment;
+                         segments.add(mine.get(i));
+                         segments.add(mine.get(i + 1));
                     }
                }
           }
-          segment [0] = empty;
-          segment [1] = empty;
-          return segment;
+          return segments;
      }
 
      public static void main (String[] args) {
           List<BigIntPoint> ownroute;
           List<BigIntPoint> cryptroute;
-          BigIntPoint [] location;
+          List<BigIntPoint> intersections;
 
           // When this is migarated, we can set a standard file path name.
           String ownroutefile = "ownroutefile.txt";
@@ -183,8 +173,12 @@ public class HomomorphicPaths {
           ownroute = read_all_paths(ownroutefile);
           cryptroute = read_all_paths(cryptroutefile);
 
-          location = whereIntersection(ownroute, cryptroute);
 
-          System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", location[0].x.intValue(), location[0].y.intValue(), location[1].x.intValue(), location[1].y.intValue());
+          intersections = whereIntersection(ownroute,cryptroute);
+
+          for (int i=0; i < intersections.size()-1; i=i+2){
+               System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", intersections.get(i).x.intValue(), intersections.get(i).y.intValue(), intersections.get(i+1).x.intValue(), intersections.get(i+1).y.intValue());
+          }
+
      }
 }

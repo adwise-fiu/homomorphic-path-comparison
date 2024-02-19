@@ -2,3 +2,4 @@ data/ownroute1.txt,data/cryptroute1.txt,true
 data/ownroute2.txt,data/cryptroute2.txt,true
 data/ownroute3.txt,data/cryptroute3.txt,true
 data/ownroute4.txt,data/cryptroute4.txt,false
+data/ownroute5.txt,data/cryptroute5.txt,true

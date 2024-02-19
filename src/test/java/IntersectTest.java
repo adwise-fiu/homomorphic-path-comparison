@@ -27,6 +27,7 @@ public class IntersectTest {
                 String ownroute = values[0];
                 String cryptroute = values[1];
                 String expected_result = values[2];
+                System.out.println(ownroute);
                 //Parsing routes
                 List<BigIntPoint> ownroute_list = HomomorphicPaths.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = HomomorphicPaths.read_all_paths(cryptroute);
@@ -46,8 +47,8 @@ public class IntersectTest {
 
     @Test
     public void test_drone_collision() {
-        Drone kemal = new Drone(1024);
-        Drone allan = new Drone(1024);
+        Drone kemal = new Drone(2048);
+        Drone allan = new Drone(2048);
 
         // I need the drones to have each other's public key...
 
