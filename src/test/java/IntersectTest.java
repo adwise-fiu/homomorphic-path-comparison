@@ -46,8 +46,8 @@ public class IntersectTest {
 
     @Test
     public void test_drone_collision() {
-        Drone kemal = new Drone(1024);
-        Drone allan = new Drone(1024);
+        Drone kemal = new Drone(2048);
+        Drone allan = new Drone(2048);
 
         // I need the drones to have each other's public key...
 
