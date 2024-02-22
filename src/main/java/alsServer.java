@@ -1,14 +1,16 @@
 import java.net.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class Server {
+public class alsServer {
     //initialize socket and input stream
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream in =  null;
 
     // constructor with port
-    public Server(int port)
+    public alsServer(int port)
     {
         // starts server and waits for a connection
         try
@@ -25,24 +27,8 @@ public class Server {
             in = new DataInputStream(
                     new BufferedInputStream(socket.getInputStream()));
 
-            String line = "";
-
-            // reads message from client until "Over" is sent
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = in.readUTF();
-
-                    //Make this line write a file
-                    System.out.println(line);
-
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i);
-                }
-            }
+            String string = in.readUTF();
+            Files.writeString(Paths.get("servercryptroute"), string);
             System.out.println("Closing connection");
 
             // close connection

@@ -180,5 +180,8 @@ public class HomomorphicPaths {
                System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", intersections.get(i).x.intValue(), intersections.get(i).y.intValue(), intersections.get(i+1).x.intValue(), intersections.get(i+1).y.intValue());
           }
 
+          //have this here for testing purposes, going to set up a method in Drone to make a list of routes to compare to
+          new alsServer(2536);
+
      }
 }
