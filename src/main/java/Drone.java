@@ -40,7 +40,7 @@ public class Drone {
     }
 
     // Check if this drone will collide with the other drone.
-    // Return true if a collision will occur
+    // Return true if a collision will occur - call to EncryptedPathIntersection
     public boolean willCollide(Drone other) {
         return true;
     }

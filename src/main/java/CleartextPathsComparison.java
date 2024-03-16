@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.lang.*;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 // Starting with this:
 // https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
-public class HomomorphicPaths {
+public class CleartextPathsComparison {
 
      // Returns the larger of two BigIntegers
      public static BigInteger maxBigInt(BigInteger a, BigInteger b)
@@ -48,7 +48,7 @@ public class HomomorphicPaths {
      //Used in doIntersect to avoid issues with collinearity
      static boolean onSegment(BigIntPoint p, BigIntPoint q, BigIntPoint r) {
          return leBigInt(q.x, (maxBigInt(p.x, r.x))) && geBigInt(q.x, (minBigInt(p.x, r.x)))
-                 && leBigInt(q.y, (maxBigInt(p.y, r.y))) && leBigInt(q.y, (minBigInt(p.y, r.y)));
+                 && leBigInt(q.y, (maxBigInt(p.y, r.y))) && geBigInt(q.y, (minBigInt(p.y, r.y)));
      }
 
      //Tests for clockwise or counterclockwise rotation or collinearity between the 3 points, used in doIntersect
@@ -161,8 +161,9 @@ public class HomomorphicPaths {
           return segments;
      }
 
+
      public static void main (String[] args) {
-          List<BigIntPoint> ownroute;
+          /*List<BigIntPoint> ownroute;
           List<BigIntPoint> cryptroute;
           List<BigIntPoint> intersections;
 
@@ -177,11 +178,6 @@ public class HomomorphicPaths {
           intersections = whereIntersection(ownroute,cryptroute);
 
           for (int i=0; i < intersections.size()-1; i=i+2){
-               System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", intersections.get(i).x.intValue(), intersections.get(i).y.intValue(), intersections.get(i+1).x.intValue(), intersections.get(i+1).y.intValue());
-          }
-
-          //have this here for testing purposes, going to set up a method in Drone to make a list of routes to compare to
-          new alsServer(2536);
-
+               System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", intersections.get(i).x.intValue(), intersections.get(i).y.intValue(), intersections.get(i+1).x.intValue(), intersections.get(i+1).y.intValue());*/
      }
 }

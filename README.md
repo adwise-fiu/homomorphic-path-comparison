@@ -15,5 +15,5 @@ sdk install gradle
 ## Using the Code
 For now you can run 
 ```bash
-gradle run -PchooseRole=HomomorphicPaths
+gradle run -PchooseRole=CleartextPathsComparison
 ```
