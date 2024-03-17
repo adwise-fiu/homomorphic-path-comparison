@@ -1,7 +1,7 @@
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierPublicKey;
-import security.socialistmillionaire.alice_veugen;
+import security.socialistmillionaire.alice_joye;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.List;
 
 public class EncryptedPathsComparison {
 
-    public EncryptedPathsComparison(alice_veugen myself, PaillierPublicKey public_key) {
+    public EncryptedPathsComparison(alice_joye myself, PaillierPublicKey public_key) {
         this.myself = myself;
     }
-    private final alice_veugen myself;
+    private final alice_joye myself;
 
     // This method uses Protocol2 to find Max value.
     public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b){
