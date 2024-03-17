@@ -25,6 +25,8 @@ dependencies {
     implementation 'commons-io:commons-io:2.14.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
 }
 
 // Commenting because it doesn't work well on TravisCI

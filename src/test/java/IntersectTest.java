@@ -6,9 +6,8 @@ import security.paillier.PaillierCipher;
 import security.paillier.PaillierKeyPairGenerator;
 import security.paillier.PaillierPrivateKey;
 import security.paillier.PaillierPublicKey;
-import security.socialistmillionaire.alice_veugen;
-import security.socialistmillionaire.bob_veugen;
-
+import security.socialistmillionaire.alice_joye;
+import security.socialistmillionaire.bob_joye;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -48,8 +47,8 @@ public class IntersectTest {
             String assertstring;
             String line;
 
-            alice_veugen alice = new alice_veugen();
-            bob_veugen bob = new bob_veugen(paillier,dgk,null);
+            alice_joye alice = new alice_joye();
+            bob_joye bob = new bob_joye(paillier,dgk,null);
             Thread multiply = new Thread(new BobOperations(bob,9200));
             multiply.start();
             alice.set_socket(new Socket("127.0.0.1",9200));
