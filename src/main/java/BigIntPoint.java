@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class BigIntPoint
+public class BigIntPoint implements Serializable
 {
     BigInteger x;
     BigInteger y;

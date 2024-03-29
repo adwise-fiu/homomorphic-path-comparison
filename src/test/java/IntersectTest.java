@@ -49,7 +49,7 @@ public class IntersectTest {
 
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier,dgk,null);
-            Thread multiply = new Thread(new BobOperations(bob,9200));
+            Thread multiply = new Thread(new BobThread(bob,9200));
             multiply.start();
             alice.set_socket(new Socket("127.0.0.1",9200));
             alice.receivePublicKeys();
@@ -90,7 +90,7 @@ public class IntersectTest {
 
 
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, paillier_public_key);
-                testing.encryptedPathIntersection(encryptedownroute_list,encryptedcryptroute_list, paillier_public_key, encryptedzero);
+                testing.encryptedWhereIntersection(encryptedownroute_list,encryptedcryptroute_list, paillier_public_key, encryptedzero);
                 System.out.println(testing);
 
             }

@@ -2,23 +2,23 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import security.misc.HomomorphicException;
-import security.socialistmillionaire.bob;
+import security.socialistmillionaire.bob_joye;
 
 
-public class BobOperations implements Runnable {
+public class BobThread implements Runnable {
     private final int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;
-    private final bob thisguy;
+    private final bob_joye thisguy;
 
-    public BobOperations(bob thisguy, int port) {
+    public BobThread(bob_joye thisguy, int port) {
         this.thisguy = thisguy;
         this.port = port;
     }
 
     public void run() {
         try {
-            bob_socket = new ServerSocket(this.port);
+            bob_socket = new ServerSocket(port);
             bob_client = bob_socket.accept();
             thisguy.set_socket(bob_client);
             thisguy.sendPublicKeys();

@@ -4,6 +4,7 @@ import security.paillier.PaillierPublicKey;
 import security.socialistmillionaire.alice_joye;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -92,14 +93,14 @@ public class EncryptedPathsComparison {
         boolean z = false;
 
         try {
-            // I had to pull these out of comparison statement to work with BobOperations
+            // I had to pull these out of comparison statement to work with BobThread
             BigInteger u = encryptedMaxBigInt(p.x,r.x);
             BigInteger v = encryptedMinBigInt(p.x,r.x);
             BigInteger w = encryptedMaxBigInt(p.y,r.y);
             BigInteger x = encryptedMinBigInt(p.y,r.y);
 
-            /*I have to run these one at a time to work with BobOperations. Maybe passing 4 and calling
-            Protocol2 4 times in BobOperations would speed things up.
+            /*I have to run these one at a time to work with BobThread. Maybe passing 4 and calling
+            Protocol2 4 times in BobThread would speed things up.
              */
             myself.writeInt(2);
             boolean a = myself.Protocol2(u,q.x);
@@ -131,6 +132,7 @@ public class EncryptedPathsComparison {
             return true;
         }
 
+
         if (o1 == 0 && encryptedOnSegment(p1,p2,q1)) {
             return true;
         }
@@ -158,5 +160,29 @@ public class EncryptedPathsComparison {
             }
         System.out.println("No intersections!");
         return false;
+    }
+
+    public List<BigIntPoint> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs, PaillierPublicKey public_key, BigInteger encryptedzero)
+    {
+        List<BigIntPoint> segments = new ArrayList<>();
+        List index = new ArrayList<>();
+
+        for (int j = 0; j < (theirs.size()-1); j++) {
+            for (int i = 0; i < (mine.size()-1); i++) {
+                if(encryptedDoIntersect(mine.get(i),mine.get(i+1),theirs.get(j),theirs.get(j+1), public_key, encryptedzero)) {
+
+                    index.add(i);
+                    index.add(i+1);
+
+
+                }
+            }
+        }
+        try {
+            myself.writeInt(0);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return index;
     }
 }
