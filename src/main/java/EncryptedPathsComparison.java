@@ -1,3 +1,5 @@
+import security.dgk.DGKOperations;
+import security.dgk.DGKPublicKey;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierPublicKey;
@@ -167,6 +169,8 @@ public class EncryptedPathsComparison {
         List<BigIntPoint> segments = new ArrayList<>();
         List index = new ArrayList<>();
 
+        //This is where I was picturing the threading going, so that the calls from these for loops can be run separately
+        //My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
         for (int j = 0; j < (theirs.size()-1); j++) {
             for (int i = 0; i < (mine.size()-1); i++) {
                 if(encryptedDoIntersect(mine.get(i),mine.get(i+1),theirs.get(j),theirs.get(j+1), public_key, encryptedzero)) {
