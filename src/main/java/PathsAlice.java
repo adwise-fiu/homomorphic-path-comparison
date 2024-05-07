@@ -2,12 +2,10 @@ import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
-import security.paillier.PaillierCipher;
 import security.socialistmillionaire.alice_joye;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,16 +42,15 @@ public class PathsAlice {
         alice_joye alice = new alice_joye();
         String my_path = new File(input_file).toString();
         List<BigIntPoint> alice_route = shared.read_all_paths(my_path);
-        List<BigIntPoint> alices_encrypted_route = new ArrayList<>();
         List<BigIntPoint> bobs_route = new ArrayList<>();
 
         try {
             Socket socket = new Socket (ip_address, pathsalice.port);
             alice.set_socket(socket);
             alice.receivePublicKeys();
+
             ValidatingObjectInputStream input = shared.get_ois(socket);
             Object object = input.readObject();
-
             if (object instanceof List<?>) {
                 for (Object element : (List<?>) object) {
                     if (element instanceof BigIntPoint) {
@@ -61,14 +58,9 @@ public class PathsAlice {
                     }
                 }
             }
+            assert !bobs_route.isEmpty();
 
-            for (BigIntPoint bigIntPoint : alice_route) {
-                BigInteger alice_x = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
-                BigInteger alice_y = PaillierCipher.encrypt(bigIntPoint.y.longValue(), alice.getPaillierPublicKey());
-
-                BigIntPoint point = new BigIntPoint(alice_x, alice_y);
-                alices_encrypted_route.add(point);
-            }
+            List<BigIntPoint> alices_encrypted_route = shared.encrypt_paillier(alice_route, alice.getPaillierPublicKey());
 
             EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
             List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route,

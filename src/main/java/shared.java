@@ -1,6 +1,8 @@
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import security.dgk.DGKOperations;
+import security.dgk.DGKPublicKey;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierPublicKey;
@@ -71,6 +73,19 @@ public class shared {
         for (BigIntPoint bigIntPoint : input_path) {
             BigInteger their_x = PaillierCipher.encrypt(bigIntPoint.x.longValue(), paillier_public_key);
             BigInteger their_y = PaillierCipher.encrypt(bigIntPoint.y.longValue(), paillier_public_key);
+
+            BigIntPoint theirs = new BigIntPoint(their_x, their_y);
+            encrypted_path.add(theirs);
+        }
+        return encrypted_path;
+    }
+
+    public static List<BigIntPoint> encrypt_dgk(List<BigIntPoint> input_path,
+                                                     DGKPublicKey dgk_public_key) {
+        List<BigIntPoint> encrypted_path = new ArrayList<>();
+        for (BigIntPoint bigIntPoint : input_path) {
+            BigInteger their_x = DGKOperations.encrypt(bigIntPoint.x.longValue(), dgk_public_key);
+            BigInteger their_y = DGKOperations.encrypt(bigIntPoint.y.longValue(), dgk_public_key);
 
             BigIntPoint theirs = new BigIntPoint(their_x, their_y);
             encrypted_path.add(theirs);
