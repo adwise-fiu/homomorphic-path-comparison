@@ -6,7 +6,6 @@ import security.dgk.DGKKeyPairGenerator;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierKeyPairGenerator;
-import security.paillier.PaillierPrivateKey;
 import security.paillier.PaillierPublicKey;
 import security.socialistmillionaire.alice_joye;
 import security.socialistmillionaire.bob_joye;
@@ -54,24 +53,25 @@ public class IntersectTest {
             alice.set_socket(new Socket("127.0.0.1",9200));
             alice.receivePublicKeys();
 
+            PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
+            BigInteger encrypted_zero = PaillierCipher.encrypt(0, paillier_public_key);
+            EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
+
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 String ownroute = values[0];
                 String cryptroute = values[1];
                 String expected_result = values[2];
-                System.out.println(ownroute);
+                System.out.println("Reading the file: " + ownroute);
+                boolean will_collide = Boolean.parseBoolean(expected_result);
 
                 //Parsing routes
                 List<BigIntPoint> ownroute_list = CleartextPathsComparison.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = CleartextPathsComparison.read_all_paths(cryptroute);
 
                 //encrypt routes
-                PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
-                PaillierPrivateKey paillier_private_key = (PaillierPrivateKey) paillier.getPrivate();
                 List<BigIntPoint> encryptedownroute_list = new ArrayList<>();
                 List<BigIntPoint> encryptedcryptroute_list = new ArrayList<>();
-
-                BigInteger encrypted_zero = PaillierCipher.encrypt(0, paillier_public_key);
 
                 for (BigIntPoint intPoint : ownroute_list) {
                     BigInteger own_x = PaillierCipher.encrypt(intPoint.x.longValue(), paillier_public_key);
@@ -89,10 +89,16 @@ public class IntersectTest {
                     encryptedcryptroute_list.add(theirs);
                 }
 
-                EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, paillier_public_key);
-                testing.encryptedWhereIntersection(encryptedownroute_list, encryptedcryptroute_list,
+                // Update testing...
+                List<Integer> indexes = testing.encryptedWhereIntersection(encryptedownroute_list, encryptedcryptroute_list,
                         paillier_public_key, encrypted_zero);
-                System.out.println(testing);
+
+                System.out.println("Indexes");
+                for (Integer i: indexes) {
+                    System.out.println(i);
+                }
+                // If the index is empty, no collision
+                assertEquals(!indexes.isEmpty(), will_collide);
             }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e) {

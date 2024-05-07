@@ -41,16 +41,22 @@ public class PathsAlice {
         String my_path = new File(input_file).toString();
         List<BigIntPoint> alice_route = CleartextPathsComparison.read_all_paths(my_path);
         List<BigIntPoint> alices_encrypted_route = new ArrayList<>();
-        List<BigIntPoint> bobs_route;
+        List<BigIntPoint> bobs_route = new ArrayList<>();
 
         try {
-
             Socket socket = new Socket (ip_address, pathsalice.port);
             alice.set_socket(socket);
             alice.receivePublicKeys();
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
             Object object = input.readObject();
-            bobs_route = (ArrayList<BigIntPoint>) object;
+
+            if (object instanceof List<?>) {
+                for (Object element : (List<?>) object) {
+                    if (element instanceof BigIntPoint) {
+                        bobs_route.add((BigIntPoint) element);
+                    }
+                }
+            }
             BigInteger encrypted_zero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
 
             for (BigIntPoint bigIntPoint : alice_route) {
@@ -61,7 +67,7 @@ public class PathsAlice {
                 alices_encrypted_route.add(point);
             }
 
-            EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, alice.getPaillierPublicKey());
+            EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
             List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route,
                     alice.getPaillierPublicKey(), encrypted_zero);
             System.out.println(result);

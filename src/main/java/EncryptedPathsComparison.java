@@ -10,9 +10,10 @@ import java.util.List;
 
 public class EncryptedPathsComparison {
 
-    public EncryptedPathsComparison(alice_joye myself, PaillierPublicKey public_key) {
+    public EncryptedPathsComparison(alice_joye myself) {
         this.myself = myself;
     }
+
     private final alice_joye myself;
 
     // This method uses Protocol2 to find Max value.
@@ -38,19 +39,22 @@ public class EncryptedPathsComparison {
         boolean z = false;
         try {
             myself.writeInt(2);
-            z = myself.Protocol2(a,b);
-        } catch (HomomorphicException | IOException | ClassNotFoundException e) {
+            z = myself.Protocol2(a, b);
+        }
+        catch (HomomorphicException | IOException | ClassNotFoundException e) {
             System.err.println("Exception in Min: " + e.getMessage());
         }
-        if (z){
+        if (z) {
             return b;
-        }else {
+        }
+        else {
             return a;
         }
     }
 
     //Checks orientation of 3 points, for use in doIntersect
-    public int encryptedOrientation(BigIntPoint p, BigIntPoint q, BigIntPoint r, PaillierPublicKey public_key, BigInteger encryptedzero) {
+    public int encryptedOrientation(BigIntPoint p, BigIntPoint q, BigIntPoint r, PaillierPublicKey public_key,
+                                    BigInteger encrypted_zero) {
 
         try {
             // From this line BigInteger temp1 = q.y.subtract(p.y);
@@ -73,9 +77,9 @@ public class EncryptedPathsComparison {
             //Protocol2 returns boolean param1 >= param2.
 
             myself.writeInt(2);
-            boolean testcase1 = (myself.Protocol2(val,encryptedzero));
+            boolean testcase1 = (myself.Protocol2(val,encrypted_zero));
             myself.writeInt(2);
-            boolean testcase2 = (myself.Protocol2(encryptedzero,val));
+            boolean testcase2 = (myself.Protocol2(encrypted_zero, val));
             //if val = 0
             if (testcase1 && testcase2) {
                 return 0;
@@ -91,6 +95,7 @@ public class EncryptedPathsComparison {
 
         catch (HomomorphicException | IOException | ClassNotFoundException a) {
             System.err.println("Exception in encryptedOrientation: " + a.getMessage());
+            a.printStackTrace();
             throw new RuntimeException(a);
         }
     }
@@ -173,13 +178,12 @@ public class EncryptedPathsComparison {
     public List<Integer> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs,
                                                         PaillierPublicKey public_key, BigInteger encrypted_zero)
     {
-        List<BigIntPoint> segments = new ArrayList<>();
         List<Integer> index = new ArrayList<>();
 
-        //This is where I was picturing the threading going, so that the calls from these for loops can be run separately
-        //My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
-        for (int j = 0; j < (theirs.size()-1); j++) {
-            for (int i = 0; i < (mine.size()-1); i++) {
+        // This is where I was picturing the threading going, so that the calls from these for loops can be run separately,
+        // My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
+        for (int j = 0; j < (theirs.size() - 1); j++) {
+            for (int i = 0; i < (mine.size() - 1); i++) {
                 if(encryptedDoIntersect(mine.get(i), mine.get(i+1),theirs.get(j),
                         theirs.get(j+1), public_key, encrypted_zero)) {
                     index.add(i);
