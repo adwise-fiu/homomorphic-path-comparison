@@ -6,6 +6,8 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import security.dgk.DGKKeyPairGenerator;
 import security.dgk.DGKOperations;
 import security.dgk.DGKPrivateKey;
@@ -18,19 +20,15 @@ import security.paillier.PaillierPublicKey;
 import security.socialistmillionaire.bob_joye;
 
 public class PathsBob {
+    private static final Logger logger = LogManager.getLogger(PathsBob.class);
 
-    private int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;
     private KeyPair paillier;
     private  KeyPair dgk;
-    private  DGKPublicKey dgk_public_key;
-    private  DGKPrivateKey dgk_private_key;
     private  PaillierPublicKey paillier_public_key;
-    private  PaillierPrivateKey paillier_private_key;
 
-    public PathsBob(int port, int key_size) {
-        this.port = port;
+    public PathsBob(int key_size) {
         generate_keys(key_size);
     }
 
@@ -45,11 +43,7 @@ public class PathsBob {
         PaillierKeyPairGenerator pa = new PaillierKeyPairGenerator();
         pa.initialize(key_size, null);
         paillier = pa.generateKeyPair();
-
-        dgk_public_key = (DGKPublicKey) dgk.getPublic();
         paillier_public_key = (PaillierPublicKey) paillier.getPublic();
-        dgk_private_key = (DGKPrivateKey) dgk.getPrivate();
-        paillier_private_key = (PaillierPrivateKey) paillier.getPrivate();
     }
 
 
@@ -70,7 +64,7 @@ public class PathsBob {
             System.exit(1);
         }
 
-        PathsBob iam = new PathsBob(port,2048);
+        PathsBob iam = new PathsBob(2048);
         bob_joye bob = new bob_joye(iam.paillier, iam.dgk);
         String my_path = new File(input_file).toString();
 
@@ -114,8 +108,9 @@ public class PathsBob {
             }
 
         } catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            e.printStackTrace();
-        } finally {
+            logger.fatal(e.getStackTrace());
+        }
+        finally {
             try {
                 if (bob_client != null) {
                     bob_client.close();
@@ -123,8 +118,9 @@ public class PathsBob {
                 if (bob_socket != null) {
                     bob_socket.close();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                logger.fatal(e.getStackTrace());
             }
         }
     }

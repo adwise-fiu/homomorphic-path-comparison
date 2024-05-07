@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.socialistmillionaire.alice_joye;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PathsAlice {
+    private static final Logger logger = LogManager.getLogger(PathsAlice.class);
+
     private final int port;
 
     public PathsAlice(int port) {
@@ -73,7 +77,7 @@ public class PathsAlice {
             System.out.println(result);
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e){
-            e.printStackTrace();
+            logger.fatal(e.getStackTrace());
         }
     }
 }

@@ -1,11 +1,16 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
 import security.socialistmillionaire.bob_joye;
 
 
 public class BobThread implements Runnable {
+    private static final Logger logger = LogManager.getLogger(BobThread.class);
+
     private final int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;
@@ -41,7 +46,7 @@ public class BobThread implements Runnable {
            }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            e.printStackTrace();
+            logger.fatal(e.getStackTrace());
         }
         finally {
             try {
@@ -52,7 +57,7 @@ public class BobThread implements Runnable {
                     bob_socket.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.fatal(e.getStackTrace());
             }
         }
     }
