@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.util.ArrayList;
@@ -52,7 +53,8 @@ public class IntersectTest {
                 // Set-up
                 Thread multiply = new Thread(new BobThread(bob,9200));
                 multiply.start();
-                alice.set_socket(new Socket("127.0.0.1",9200));
+
+                alice.set_socket(connectWithRetry("127.0.0.1", 9200));
                 alice.receivePublicKeys();
 
                 PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
@@ -110,6 +112,30 @@ public class IntersectTest {
         }
         catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
             System.err.println("Error reading files" + e.getMessage());
+        }
+    }
+
+    public static Socket connectWithRetry(String host, int port) {
+        while (true) {
+            try {
+                // Attempt to connect
+                Socket socket = new Socket(host, port);
+
+                // If the connection is successful, print a message and break out of the loop
+                System.out.println("Connected successfully!");
+                return socket;
+            }
+            catch (ConnectException e) {
+                // Connection refused, print a message and retry after a delay
+                System.out.println("Connection refused. Retrying in 1 second...");
+                try {
+                    Thread.sleep(1000); // Wait for 5 seconds before retrying
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
