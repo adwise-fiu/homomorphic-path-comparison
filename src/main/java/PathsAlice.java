@@ -43,7 +43,7 @@ public class PathsAlice {
         PathsAlice pathsalice = new PathsAlice(port);
         alice_joye alice = new alice_joye();
         String my_path = new File(input_file).toString();
-        List<BigIntPoint> alice_route = CleartextPathsComparison.read_all_paths(my_path);
+        List<BigIntPoint> alice_route = shared.read_all_paths(my_path);
         List<BigIntPoint> alices_encrypted_route = new ArrayList<>();
         List<BigIntPoint> bobs_route = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class PathsAlice {
             Socket socket = new Socket (ip_address, pathsalice.port);
             alice.set_socket(socket);
             alice.receivePublicKeys();
-            ValidatingObjectInputStream input = get_ois(socket);
+            ValidatingObjectInputStream input = shared.get_ois(socket);
             Object object = input.readObject();
 
             if (object instanceof List<?>) {
@@ -61,7 +61,6 @@ public class PathsAlice {
                     }
                 }
             }
-            BigInteger encrypted_zero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
 
             for (BigIntPoint bigIntPoint : alice_route) {
                 BigInteger alice_x = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
@@ -73,25 +72,11 @@ public class PathsAlice {
 
             EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
             List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route,
-                    alice.getPaillierPublicKey(), encrypted_zero);
+                    alice.getPaillierPublicKey(), alice.getPaillierPublicKey().ZERO());
             System.out.println(result);
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e){
             logger.fatal(e.getStackTrace());
         }
     }
-
-    public static ValidatingObjectInputStream get_ois(Socket socket) throws IOException {
-        ValidatingObjectInputStream ois = new ValidatingObjectInputStream(socket.getInputStream());
-        ois.accept(
-                java.util.List.class,
-                BigIntPoint.class,
-                java.lang.Number.class,
-                java.math.BigInteger.class
-        );
-        ois.accept("[B");
-        ois.accept("[L*");
-        return ois;
-    }
-
 }

@@ -46,7 +46,7 @@ public class BobThread implements Runnable {
            }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            logger.fatal(e.getStackTrace());
+            logger.fatal(e);
         }
         finally {
             try {
@@ -57,7 +57,7 @@ public class BobThread implements Runnable {
                     bob_socket.close();
                 }
             } catch (IOException e) {
-                logger.fatal(e.getStackTrace());
+                logger.fatal(e);
             }
         }
     }

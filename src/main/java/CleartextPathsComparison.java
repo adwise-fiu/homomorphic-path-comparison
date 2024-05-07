@@ -1,13 +1,11 @@
-import java.io.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.*;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.nio.charset.StandardCharsets;
+
 
 // Starting with this:
 // https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
@@ -99,36 +97,6 @@ public class CleartextPathsComparison {
           }
 
           return false;
-     }
-
-     public static List<BigIntPoint> read_all_paths(String file_path) {
-          String route = null;
-          try {
-               route = Files.readString(Path.of(file_path), StandardCharsets.UTF_8);
-          }
-          catch (IOException e) {
-               System.err.println("An IOException occurred in read_all_paths" + e.getMessage());
-          }
-          return parse_line(route);
-     }
-
-     public static List<BigIntPoint> parse_line(String input) {
-          List<BigIntPoint> result = new ArrayList<>();
-
-          //Define a regex pattern for extracting pairs of numbers within parentheses
-          Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
-
-          //Use a Matcher to find matches in the input string
-          Matcher matcher = pattern.matcher(input);
-
-          //Iterate through the matches and extract BigInteger values
-          while (matcher.find()) {
-               String group1 = matcher.group(1);
-               String group2 = matcher.group(2);
-               BigIntPoint pair = new BigIntPoint(new BigInteger(group1), new BigInteger(group2));
-               result.add(pair);
-          }
-          return result;
      }
 
      //Boolean function that iterates over two paths looking for intersections
