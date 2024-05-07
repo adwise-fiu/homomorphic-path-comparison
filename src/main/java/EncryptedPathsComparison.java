@@ -98,9 +98,9 @@ public class EncryptedPathsComparison {
 
             // Protocol2 returns boolean param1 >= param2.
             myself.writeInt(2);
-            boolean testcase1 = (myself.Protocol2(val, encrypted_zero));
+            boolean testcase1 = myself.Protocol2(val, encrypted_zero);
             myself.writeInt(2);
-            boolean testcase2 = (myself.Protocol2(encrypted_zero, val));
+            boolean testcase2 = myself.Protocol2(encrypted_zero, val);
             //if val = 0
             if (testcase1 && testcase2) {
                 return 0;
@@ -180,8 +180,7 @@ public class EncryptedPathsComparison {
         return false;
     }
 
-    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)
-            throws HomomorphicException {
+    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
         for (int i = 0; i < (mine.size() - 1); i++) {
             for (int j = 0; j < (theirs.size() - 1); j++) {
                 if (encryptedDoIntersect(mine.get(i), mine.get(i + 1),

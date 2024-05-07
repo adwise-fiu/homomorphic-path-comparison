@@ -44,8 +44,8 @@ public class IntersectTest {
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier, dgk);
 
-            alice.setDGKMode(true);
-            bob.setDGKMode(true);
+            alice.setDGKMode(false);
+            bob.setDGKMode(false);
 
             while ((line = br.readLine()) != null) {
                 // Set-up
@@ -91,6 +91,7 @@ public class IntersectTest {
             }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
+            e.printStackTrace();
             logger.fatal(e);
         }
     }
