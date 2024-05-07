@@ -19,7 +19,7 @@ import security.socialistmillionaire.bob_joye;
 
 public class PathsBob {
 
-    private static int port;
+    private int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;
     private KeyPair paillier;

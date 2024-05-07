@@ -6,9 +6,12 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EncryptedPathsComparison {
+
+    private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
     public EncryptedPathsComparison(alice_joye myself) {
         this.myself = myself;
@@ -35,7 +38,7 @@ public class EncryptedPathsComparison {
     }
 
     //This method runs Protocol2 to find Min value. I could've just used Max, but it reads easier this way later on.
-    public BigInteger encryptedMinBigInt(BigInteger a, BigInteger b){
+    public BigInteger encryptedMinBigInt(BigInteger a, BigInteger b) {
         boolean z = false;
         try {
             myself.writeInt(2);
@@ -105,10 +108,10 @@ public class EncryptedPathsComparison {
 
         try {
             // I had to pull these out of comparison statement to work with BobThread
-            BigInteger u = encryptedMaxBigInt(p.x,r.x);
-            BigInteger v = encryptedMinBigInt(p.x,r.x);
-            BigInteger w = encryptedMaxBigInt(p.y,r.y);
-            BigInteger x = encryptedMinBigInt(p.y,r.y);
+            BigInteger u = encryptedMaxBigInt(p.x, r.x);
+            BigInteger v = encryptedMinBigInt(p.x, r.x);
+            BigInteger w = encryptedMaxBigInt(p.y, r.y);
+            BigInteger x = encryptedMinBigInt(p.y, r.y);
 
             /*I have to run these at a time to work with BobThread. Maybe passing 4 and calling
             Protocol2 4 times in BobThread would speed things up.
@@ -179,6 +182,7 @@ public class EncryptedPathsComparison {
                                                         PaillierPublicKey public_key, BigInteger encrypted_zero)
     {
         List<Integer> index = new ArrayList<>();
+        long start_wait = System.nanoTime();
 
         // This is where I was picturing the threading going, so that the calls from these for loops can be run separately,
         // My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
@@ -196,8 +200,12 @@ public class EncryptedPathsComparison {
             myself.writeInt(0);
         }
         catch(IOException e) {
-            e.printStackTrace();
+            logger.fatal(e.getStackTrace());
         }
+        long end_wait = System.nanoTime();
+        double wait_time = (double) (end_wait - start_wait);
+        wait_time = wait_time/1000000;
+        logger.info(String.format("[Alice] completed intersection checking %f ms", wait_time));
         return index;
     }
 }

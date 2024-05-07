@@ -17,7 +17,7 @@ java {
 }
 
 dependencies {
-    implementation 'junit:junit:4.13.1'
+    implementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 
@@ -49,12 +49,37 @@ gradle.projectsEvaluated {
     }
 }
 
-
 jacocoTestReport {
     reports {
-        xml.required=true
-        html.required=true
+        if (project.hasProperty("createReports")) {
+            xml.required = true
+            html.required = true
+        }
+        else {
+            html.required = false
+            xml.required = false
+        }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.incremental = true
+}
+
+tasks.withType(Test).configureEach {
+    if (project.hasProperty("createReports")) {
+        reports.html.required = true
+        reports.junitXml.required = true
+    }
+    else {
+        reports.html.required = false
+        reports.junitXml.required = false
+    }
+}
+
+clean {
+    delete 'logs/*.log'
 }
 
 check.dependsOn jacocoTestReport

@@ -60,10 +60,10 @@ public class PathsAlice {
             BigInteger encrypted_zero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
 
             for (BigIntPoint bigIntPoint : alice_route) {
-                BigInteger alicex = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
-                BigInteger alicey = PaillierCipher.encrypt(bigIntPoint.y.longValue(), alice.getPaillierPublicKey());
+                BigInteger alice_x = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
+                BigInteger alice_y = PaillierCipher.encrypt(bigIntPoint.y.longValue(), alice.getPaillierPublicKey());
 
-                BigIntPoint point = new BigIntPoint(alicex, alicey);
+                BigIntPoint point = new BigIntPoint(alice_x, alice_y);
                 alices_encrypted_route.add(point);
             }
 

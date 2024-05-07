@@ -18,7 +18,8 @@ public class CleartextPathsComparison {
      public static BigInteger maxBigInt(BigInteger a, BigInteger b) {
           if (a.compareTo(b) < 0) {
                return b;
-          } else {
+          }
+          else {
                return a;
           }
 
@@ -28,7 +29,8 @@ public class CleartextPathsComparison {
      public static BigInteger minBigInt(BigInteger a, BigInteger b) {
           if (a.compareTo(b) < 0) {
                return a;
-          } else {
+          }
+          else {
                return b;
           }
      }
@@ -36,7 +38,6 @@ public class CleartextPathsComparison {
      //Returns true if a is greater than or equal to b
      public static boolean geBigInt(BigInteger a, BigInteger b) {
           return a.compareTo(b) >= 0;
-
      }
 
      //Returns true if a is lesser than or equal to b
@@ -64,9 +65,11 @@ public class CleartextPathsComparison {
 
           if (ans == 0) {
                return 0;
-          } else if (ans > 0) {
+          }
+          else if (ans > 0) {
                return 1;
-          } else {
+          }
+          else {
                return 2;
           }
      }
