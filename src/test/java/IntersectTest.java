@@ -114,7 +114,7 @@ public class IntersectTest {
             }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
-            logger.fatal(e.getStackTrace());
+            logger.fatal(e);
         }
     }
 
@@ -135,11 +135,11 @@ public class IntersectTest {
                     Thread.sleep(1000); // Wait for 1 second before retrying
                 }
                 catch (InterruptedException ex) {
-                    logger.info(ex.getStackTrace());
+                    logger.info(ex);
                 }
             }
             catch (Exception e) {
-                logger.fatal(e.getStackTrace());
+                logger.fatal(e);
             }
         }
     }

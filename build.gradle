@@ -37,6 +37,11 @@ test {
 // in Gradle output.
         showStandardStreams = true
     }
+
+    // Set JVM arguments to include your agent
+    jvmArgs = [
+            '-javaagent:libs/InstrumentationAgent.jar' // Change this to your agent JAR path
+    ]
 }
 
 // This library was built for Java 8 so it can be imported into Android as well.
@@ -87,3 +92,16 @@ check.dependsOn jacocoTestReport
 application {
     mainClass.set(project.findProperty("chooseRole").toString())
 }
+
+// Define a task to run your Java application with the agent
+tasks.register('runWithAgent', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    // Set JVM arguments to include your agent
+    jvmArgs = [
+            '-javaagent:libs/InstrumentationAgent.jar'
+    ]
+}
+
+// Configure the 'run' task to depend on 'runWithAgent'
+tasks.run.dependsOn('runWithAgent')
