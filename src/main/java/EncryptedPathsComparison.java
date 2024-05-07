@@ -154,7 +154,7 @@ public class EncryptedPathsComparison {
     }
 
     public boolean encryptedDoIntersect(BigIntPoint p1, BigIntPoint q1,
-                                        BigIntPoint p2, BigIntPoint q2) throws HomomorphicException {
+                                        BigIntPoint p2, BigIntPoint q2) {
 
         int o1 = encryptedOrientation(p1, q1, p2);
         int o2 = encryptedOrientation(p1, q1, q2);

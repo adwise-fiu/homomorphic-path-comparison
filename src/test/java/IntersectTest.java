@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import security.dgk.DGKKeyPairGenerator;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierKeyPairGenerator;
-import security.paillier.PaillierPublicKey;
 import security.socialistmillionaire.alice_joye;
 import security.socialistmillionaire.bob_joye;
 import java.io.BufferedReader;
@@ -24,10 +23,6 @@ public class IntersectTest {
 
     private static KeyPair dgk = null;
     private static KeyPair paillier = null;
-    @Before
-    public void read_properties() {
-
-    }
 
     @Before
     public void generate_keys() {
@@ -49,8 +44,8 @@ public class IntersectTest {
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier, dgk);
 
-            alice.setDGKMode(false);
-            bob.setDGKMode(false);
+            alice.setDGKMode(true);
+            bob.setDGKMode(true);
 
             while ((line = br.readLine()) != null) {
                 // Set-up
