@@ -102,8 +102,9 @@ public class CleartextPathsComparison {
           String route = null;
           try {
                route = Files.readString(Path.of(file_path), StandardCharsets.UTF_8);
-          } catch (IOException e) {
-               System.err.println("An IOException occured in read_all_paths" + e.getMessage());
+          }
+          catch (IOException e) {
+               System.err.println("An IOException occurred in read_all_paths" + e.getMessage());
           }
           return parse_line(route);
      }

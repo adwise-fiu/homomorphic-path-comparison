@@ -87,7 +87,9 @@ public class EncryptedPathsComparison {
                 return 2;
             }
 
-        } catch (HomomorphicException | IOException | ClassNotFoundException a) {
+        }
+
+        catch (HomomorphicException | IOException | ClassNotFoundException a) {
             System.err.println("Exception in encryptedOrientation: " + a.getMessage());
             throw new RuntimeException(a);
         }

@@ -29,7 +29,7 @@ public class PathsBob {
     private  PaillierPublicKey paillier_public_key;
     private  PaillierPrivateKey paillier_private_key;
 
-    public PathsBob(int port, int key_size){
+    public PathsBob(int port, int key_size) {
         this.port = port;
         generate_keys(key_size);
     }
@@ -54,21 +54,36 @@ public class PathsBob {
 
 
     public static void main(String[] args) {
+        // Parse input
+        if (args.length != 2) {
+            System.err.println("Invalid number of arguments, need path and port number");
+        }
 
-        PathsBob iam = new PathsBob(9200,2048);
+        String input_file = args[0];
+        int port = 0;
+
+        try {
+            port = Integer.parseInt(args[1]);
+        }
+        catch (NumberFormatException e) {
+            System.err.println("Invalid port provided");
+            System.exit(1);
+        }
+
+        PathsBob iam = new PathsBob(port,2048);
         bob_joye bob = new bob_joye(iam.paillier, iam.dgk);
-        String my_path = new File("cryptroutefile.txt").toString();
+        String my_path = new File(input_file).toString();
 
         try(BufferedReader br = new BufferedReader(new FileReader(my_path))) {
             String line;
             List<BigIntPoint> bob_route_encrypted = new ArrayList<>();
 
             List<BigIntPoint> bob_route = CleartextPathsComparison.read_all_paths(my_path);
-            for (int i = 0; i < bob_route.size(); i++){
-                BigInteger bobx = PaillierCipher.encrypt(bob_route.get(i).x.longValue(), iam.paillier_public_key);
-                BigInteger boby = PaillierCipher.encrypt(bob_route.get(i).y.longValue(), iam.paillier_public_key);
+            for (BigIntPoint bigIntPoint : bob_route) {
+                BigInteger bob_x = PaillierCipher.encrypt(bigIntPoint.x.longValue(), iam.paillier_public_key);
+                BigInteger bob_y = PaillierCipher.encrypt(bigIntPoint.y.longValue(), iam.paillier_public_key);
 
-                BigIntPoint point = new BigIntPoint(bobx, boby);
+                BigIntPoint point = new BigIntPoint(bob_x, bob_y);
                 bob_route_encrypted.add(point);
             }
 

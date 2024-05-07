@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.math.BigInteger;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,26 +17,41 @@ public class PathsAlice {
         this.port = port;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        // Parse input
+        if (args.length != 3) {
+            System.err.println("Invalid number of arguments, need path and IP and port number");
+        }
 
-        PathsAlice pathsalice = new PathsAlice(9200);
+        String input_file = args[0];
+        String ip_address = args[1];
+        int port = 0;
 
+        try {
+            port = Integer.parseInt(args[2]);
+        }
+        catch (NumberFormatException e) {
+            System.err.println("Invalid port provided");
+            System.exit(1);
+        }
+
+        // Execute the program
+        PathsAlice pathsalice = new PathsAlice(port);
         alice_joye alice = new alice_joye();
-        String my_path = new File("ownroutefile.txt").toString();
+        String my_path = new File(input_file).toString();
         List<BigIntPoint> alice_route = CleartextPathsComparison.read_all_paths(my_path);
         List<BigIntPoint> alices_encrypted_route = new ArrayList<>();
         List<BigIntPoint> bobs_route;
 
-
         try {
 
-            Socket socket = new Socket ("127.0.0.1", pathsalice.port);
+            Socket socket = new Socket (ip_address, pathsalice.port);
             alice.set_socket(socket);
             alice.receivePublicKeys();
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
             Object object = input.readObject();
             bobs_route = (ArrayList<BigIntPoint>) object;
-            BigInteger encryptedzero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
+            BigInteger encrypted_zero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
 
             for (BigIntPoint bigIntPoint : alice_route) {
                 BigInteger alicex = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
@@ -48,7 +62,8 @@ public class PathsAlice {
             }
 
             EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, alice.getPaillierPublicKey());
-            List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route,bobs_route,alice.getPaillierPublicKey(), encryptedzero);
+            List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route,
+                    alice.getPaillierPublicKey(), encrypted_zero);
             System.out.println(result);
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e){
