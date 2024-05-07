@@ -10,7 +10,6 @@ import security.socialistmillionaire.bob_joye;
 
 public class BobThread implements Runnable {
     private static final Logger logger = LogManager.getLogger(BobThread.class);
-
     private final int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;

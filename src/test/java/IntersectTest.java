@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 import security.dgk.DGKKeyPairGenerator;
 import security.misc.HomomorphicException;
-import security.paillier.PaillierCipher;
 import security.paillier.PaillierKeyPairGenerator;
 import security.paillier.PaillierPublicKey;
 import security.socialistmillionaire.alice_joye;
@@ -15,11 +14,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.security.KeyPair;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IntersectTest {
@@ -52,6 +49,9 @@ public class IntersectTest {
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier, dgk);
 
+            alice.setDGKMode(true);
+            bob.setDGKMode(true);
+
             while ((line = br.readLine()) != null) {
                 // Set-up
                 Thread multiply = new Thread(new BobThread(bob,9200));
@@ -60,7 +60,7 @@ public class IntersectTest {
                 alice.set_socket(connectWithRetry("127.0.0.1", 9200));
                 alice.receivePublicKeys();
 
-                PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
+                PaillierPublicKey paillier_public_key = bob.getPaillierPublicKey();
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
 
                 // Parse data and run-test
@@ -75,13 +75,13 @@ public class IntersectTest {
                 List<BigIntPoint> ownroute_list = shared.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = shared.read_all_paths(cryptroute);
 
-                // Encrypt routes
-                List<BigIntPoint> encryptedownroute_list = shared.encrypt_paillier(ownroute_list, paillier_public_key);
-                List<BigIntPoint> encryptedcryptroute_list = shared.encrypt_paillier(cryptroute_list, paillier_public_key);
+                // Encrypt routes, DGK
+                List<BigIntPoint> encryptedownroute_list = shared.encrypt_dgk(ownroute_list, bob.getDGKPublicKey());
+                List<BigIntPoint> encryptedcryptroute_list = shared.encrypt_dgk(cryptroute_list, bob.getDGKPublicKey());
 
                 // Update testing...
-                List<Integer> indexes = testing.encryptedWhereIntersection(encryptedownroute_list, encryptedcryptroute_list,
-                        paillier_public_key, paillier_public_key.ZERO());
+                List<Integer> indexes = testing.encryptedWhereIntersection(encryptedownroute_list,
+                        encryptedcryptroute_list);
 
                 System.out.println("Indexes");
                 for (Integer i: indexes) {

@@ -63,8 +63,7 @@ public class PathsAlice {
             List<BigIntPoint> alices_encrypted_route = shared.encrypt_paillier(alice_route, alice.getPaillierPublicKey());
 
             EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
-            List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route,
-                    alice.getPaillierPublicKey(), alice.getPaillierPublicKey().ZERO());
+            List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route);
             System.out.println(result);
         }
         catch (IOException | ClassNotFoundException | HomomorphicException e){

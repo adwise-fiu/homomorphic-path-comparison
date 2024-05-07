@@ -1,6 +1,3 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.lang.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
