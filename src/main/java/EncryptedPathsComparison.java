@@ -127,10 +127,10 @@ public class EncryptedPathsComparison {
 
             z =  a && b && c && d;
 
-        } catch (HomomorphicException | IOException | ClassNotFoundException e){
+        }
+        catch (HomomorphicException | IOException | ClassNotFoundException e){
             System.err.println("Exception in OnSegment" + e.getMessage());
         }
-
         return z;
     }
 

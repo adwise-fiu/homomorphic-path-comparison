@@ -1,3 +1,4 @@
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
@@ -6,7 +7,6 @@ import security.socialistmillionaire.alice_joye;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class PathsAlice {
             Socket socket = new Socket (ip_address, pathsalice.port);
             alice.set_socket(socket);
             alice.receivePublicKeys();
-            ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+            ValidatingObjectInputStream input = get_ois(socket);
             Object object = input.readObject();
 
             if (object instanceof List<?>) {
@@ -80,4 +80,18 @@ public class PathsAlice {
             logger.fatal(e.getStackTrace());
         }
     }
+
+    public static ValidatingObjectInputStream get_ois(Socket socket) throws IOException {
+        ValidatingObjectInputStream ois = new ValidatingObjectInputStream(socket.getInputStream());
+        ois.accept(
+                java.util.List.class,
+                BigIntPoint.class,
+                java.lang.Number.class,
+                java.math.BigInteger.class
+        );
+        ois.accept("[B");
+        ois.accept("[L*");
+        return ois;
+    }
+
 }

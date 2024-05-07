@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.assertEquals;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IntersectTest {
+    private static final Logger logger = LogManager.getLogger(IntersectTest.class);
 
     private static KeyPair dgk = null;
     private static KeyPair paillier = null;
@@ -69,11 +72,11 @@ public class IntersectTest {
                 System.out.println("Reading the file: " + ownroute);
                 boolean will_collide = Boolean.parseBoolean(expected_result);
 
-                //Parsing routes
+                // Parsing routes
                 List<BigIntPoint> ownroute_list = CleartextPathsComparison.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = CleartextPathsComparison.read_all_paths(cryptroute);
 
-                //encrypt routes
+                // Encrypt routes
                 List<BigIntPoint> encryptedownroute_list = new ArrayList<>();
                 List<BigIntPoint> encryptedcryptroute_list = new ArrayList<>();
 
@@ -111,7 +114,7 @@ public class IntersectTest {
             }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
-            System.err.println("Error reading files" + e.getMessage());
+            logger.fatal(e.getStackTrace());
         }
     }
 
@@ -129,12 +132,14 @@ public class IntersectTest {
                 // Connection refused, print a message and retry after a delay
                 System.out.println("Connection refused. Retrying in 1 second...");
                 try {
-                    Thread.sleep(1000); // Wait for 5 seconds before retrying
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                    Thread.sleep(1000); // Wait for 1 second before retrying
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                catch (InterruptedException ex) {
+                    logger.info(ex.getStackTrace());
+                }
+            }
+            catch (Exception e) {
+                logger.fatal(e.getStackTrace());
             }
         }
     }
