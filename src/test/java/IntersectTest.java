@@ -49,8 +49,8 @@ public class IntersectTest {
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier, dgk);
 
-            alice.setDGKMode(true);
-            bob.setDGKMode(true);
+            alice.setDGKMode(false);
+            bob.setDGKMode(false);
 
             while ((line = br.readLine()) != null) {
                 // Set-up
@@ -60,7 +60,6 @@ public class IntersectTest {
                 alice.set_socket(connectWithRetry("127.0.0.1", 9200));
                 alice.receivePublicKeys();
 
-                PaillierPublicKey paillier_public_key = bob.getPaillierPublicKey();
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
 
                 // Parse data and run-test
@@ -76,8 +75,8 @@ public class IntersectTest {
                 List<BigIntPoint> cryptroute_list = shared.read_all_paths(cryptroute);
 
                 // Encrypt routes, DGK
-                List<BigIntPoint> encryptedownroute_list = shared.encrypt_dgk(ownroute_list, bob.getDGKPublicKey());
-                List<BigIntPoint> encryptedcryptroute_list = shared.encrypt_dgk(cryptroute_list, bob.getDGKPublicKey());
+                List<BigIntPoint> encryptedownroute_list = shared.encrypt_paillier(ownroute_list, bob.getPaillierPublicKey());
+                List<BigIntPoint> encryptedcryptroute_list = shared.encrypt_paillier(cryptroute_list, bob.getPaillierPublicKey());
 
                 // Update testing...
                 List<Integer> indexes = testing.encryptedWhereIntersection(encryptedownroute_list,
