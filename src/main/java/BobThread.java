@@ -44,7 +44,8 @@ public class BobThread implements Runnable {
 
         } catch (IOException | ClassNotFoundException | HomomorphicException e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
                 if (bob_client != null) {
                     bob_client.close();

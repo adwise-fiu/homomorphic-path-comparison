@@ -1,5 +1,3 @@
-import security.dgk.DGKOperations;
-import security.dgk.DGKPublicKey;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierPublicKey;
@@ -18,17 +16,19 @@ public class EncryptedPathsComparison {
     private final alice_joye myself;
 
     // This method uses Protocol2 to find Max value.
-    public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b){
+    public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b) {
        boolean z = false;
         try {
             myself.writeInt(2);
-            z = myself.Protocol2(a,b);
-       } catch (HomomorphicException | IOException | ClassNotFoundException e) {
+            z = myself.Protocol2(a, b);
+       }
+        catch (HomomorphicException | IOException | ClassNotFoundException e) {
            System.err.println("Exception in Max: " + e.getMessage());
        }
-       if (z){
+       if (z) {
            return a;
-       }else {
+       }
+       else {
            return b;
        }
     }
@@ -80,15 +80,17 @@ public class EncryptedPathsComparison {
             if (testcase1 && testcase2) {
                 return 0;
             // if val > 0
-            } else if (testcase1 && !testcase2) {
+            } else if (testcase1) {
                 return 1;
             // if neither, then val < 0
-            } else return 2;
+            } else {
+                return 2;
+            }
 
         } catch (HomomorphicException | IOException | ClassNotFoundException a) {
             System.err.println("Exception in encryptedOrientation: " + a.getMessage());
+            throw new RuntimeException(a);
         }
-        return 3;
     }
 
     public boolean encryptedOnSegment (BigIntPoint p, BigIntPoint q, BigIntPoint r) {
@@ -104,14 +106,15 @@ public class EncryptedPathsComparison {
             /*I have to run these one at a time to work with BobThread. Maybe passing 4 and calling
             Protocol2 4 times in BobThread would speed things up.
              */
+
             myself.writeInt(2);
-            boolean a = myself.Protocol2(u,q.x);
+            boolean a = myself.Protocol2(u, q.x);
             myself.writeInt(2);
-            boolean b = myself.Protocol2(q.x,v);
+            boolean b = myself.Protocol2(q. x,v);
             myself.writeInt(2);
             boolean c = myself.Protocol2(w,q.y);
             myself.writeInt(2);
-            boolean d = myself.Protocol2(q.y,x);
+            boolean d = myself.Protocol2(q.y, x);
 
             z =  a && b && c && d;
 
@@ -122,19 +125,18 @@ public class EncryptedPathsComparison {
         return z;
     }
 
-    public boolean encryptedDoIntersect(BigIntPoint p1, BigIntPoint q1, BigIntPoint p2, BigIntPoint q2, PaillierPublicKey public_key, BigInteger encryptedzero)
+    public boolean encryptedDoIntersect(BigIntPoint p1, BigIntPoint q1,
+                                        BigIntPoint p2, BigIntPoint q2,
+                                        PaillierPublicKey public_key, BigInteger encrypted_zero)
     {
-        int o1 = encryptedOrientation(p1,q1,p2,public_key,encryptedzero);
-        int o2 = encryptedOrientation(p1,q1,q2,public_key,encryptedzero);
-        int o3 = encryptedOrientation(p2,q2,p1,public_key,encryptedzero);
-        int o4 = encryptedOrientation(p2,q2,q1,public_key,encryptedzero);
-
+        int o1 = encryptedOrientation(p1,q1,p2,public_key,encrypted_zero);
+        int o2 = encryptedOrientation(p1,q1,q2,public_key,encrypted_zero);
+        int o3 = encryptedOrientation(p2,q2,p1,public_key,encrypted_zero);
+        int o4 = encryptedOrientation(p2,q2,q1,public_key,encrypted_zero);
 
         if (o1 != o2 && o3 != o4) {
             return true;
         }
-
-
         if (o1 == 0 && encryptedOnSegment(p1,p2,q1)) {
             return true;
         }
@@ -151,12 +153,14 @@ public class EncryptedPathsComparison {
         return false;
     }
 
-    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs, PaillierPublicKey public_key, BigInteger encryptedzero) {
+    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs,
+                                             PaillierPublicKey public_key, BigInteger encrypted_zero) {
         for (int i = 0; i < (mine.size() - 1); i++) {
             for (int j = 0; j < (theirs.size() - 1); j++) {
-                if (encryptedDoIntersect(mine.get(i), mine.get(i + 1), theirs.get(j), theirs.get(j + 1), public_key, encryptedzero)) {
-                    System.out.println("Intersection!");
-                    return true;
+                if (encryptedDoIntersect(mine.get(i), mine.get(i + 1),
+                        theirs.get(j), theirs.get(j + 1), public_key, encrypted_zero)) {
+                        System.out.println("Intersection!");
+                        return true;
                     }
                 }
             }
@@ -164,27 +168,27 @@ public class EncryptedPathsComparison {
         return false;
     }
 
-    public List<BigIntPoint> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs, PaillierPublicKey public_key, BigInteger encryptedzero)
+    public List<Integer> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs,
+                                                        PaillierPublicKey public_key, BigInteger encrypted_zero)
     {
         List<BigIntPoint> segments = new ArrayList<>();
-        List index = new ArrayList<>();
+        List<Integer> index = new ArrayList<>();
 
         //This is where I was picturing the threading going, so that the calls from these for loops can be run separately
         //My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
         for (int j = 0; j < (theirs.size()-1); j++) {
             for (int i = 0; i < (mine.size()-1); i++) {
-                if(encryptedDoIntersect(mine.get(i),mine.get(i+1),theirs.get(j),theirs.get(j+1), public_key, encryptedzero)) {
-
+                if(encryptedDoIntersect(mine.get(i), mine.get(i+1),theirs.get(j),
+                        theirs.get(j+1), public_key, encrypted_zero)) {
                     index.add(i);
                     index.add(i+1);
-
-
                 }
             }
         }
         try {
             myself.writeInt(0);
-        }catch(IOException e){
+        }
+        catch(IOException e) {
             e.printStackTrace();
         }
         return index;

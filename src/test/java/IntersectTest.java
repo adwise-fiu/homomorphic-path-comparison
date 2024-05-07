@@ -42,7 +42,7 @@ public class IntersectTest {
     @Test
     public void encrypted_test_intersections() {
         String answers_path = new File("data/testroutine.csv").toString();
-        //Parse CSV file
+        // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String assertstring;
             String line;
@@ -87,10 +87,9 @@ public class IntersectTest {
                     encryptedcryptroute_list.add(theirs);
                 }
 
-
-
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, paillier_public_key);
-                testing.encryptedWhereIntersection(encryptedownroute_list,encryptedcryptroute_list, paillier_public_key, encryptedzero);
+                testing.encryptedWhereIntersection(encryptedownroute_list,encryptedcryptroute_list,
+                        paillier_public_key, encryptedzero);
                 System.out.println(testing);
 
             }
@@ -112,35 +111,19 @@ public class IntersectTest {
                 String cryptroute = values[1];
                 String expected_result = values[2];
                 System.out.println(ownroute);
-                //Parsing routes
+                // Parsing routes
                 List<BigIntPoint> ownroute_list = CleartextPathsComparison.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = CleartextPathsComparison.read_all_paths(cryptroute);
-                //Testing for intersection
+                // Testing for intersection
                 boolean output = CleartextPathsComparison.pathIntersection(ownroute_list, cryptroute_list);
-                if (output == true) {
+                if (output) {
                     assertstring = "true";
-                } else if (output == false) {
+                }
+                else {
                      assertstring = "false";
-                } else {
-                     assertstring = "error";
                 }
                 assertEquals(expected_result, assertstring);
             }
         }
-    }
-
-    @Test
-    public void test_drone_collision() {
-        Drone kemal = new Drone(2048);
-        Drone allan = new Drone(2048);
-
-
-
-
-
-        // I need the drones to have each other's public key...
-
-        // I need to figure out how to use Homomorphic Encryption Library here...
-        kemal.willCollide(allan);
     }
 }

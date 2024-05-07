@@ -26,7 +26,7 @@ public class PathsAlice {
         String my_path = new File("ownroutefile.txt").toString();
         List<BigIntPoint> alice_route = CleartextPathsComparison.read_all_paths(my_path);
         List<BigIntPoint> alices_encrypted_route = new ArrayList<>();
-        List<BigIntPoint> bobs_route = new ArrayList<>();
+        List<BigIntPoint> bobs_route;
 
 
         try {
@@ -39,20 +39,19 @@ public class PathsAlice {
             bobs_route = (ArrayList<BigIntPoint>) object;
             BigInteger encryptedzero = PaillierCipher.encrypt(0, alice.getPaillierPublicKey());
 
-            for (int i = 0; i < alice_route.size(); i++){
-                BigInteger alicex = PaillierCipher.encrypt(alice_route.get(i).x.longValue(), alice.getPaillierPublicKey());
-                BigInteger alicey = PaillierCipher.encrypt(alice_route.get(i).y.longValue(), alice.getPaillierPublicKey());
+            for (BigIntPoint bigIntPoint : alice_route) {
+                BigInteger alicex = PaillierCipher.encrypt(bigIntPoint.x.longValue(), alice.getPaillierPublicKey());
+                BigInteger alicey = PaillierCipher.encrypt(bigIntPoint.y.longValue(), alice.getPaillierPublicKey());
 
-                BigIntPoint point = new BigIntPoint(alicex,alicey);
+                BigIntPoint point = new BigIntPoint(alicex, alicey);
                 alices_encrypted_route.add(point);
             }
 
             EncryptedPathsComparison testing = new EncryptedPathsComparison(alice, alice.getPaillierPublicKey());
-            List<BigIntPoint> result = testing.encryptedWhereIntersection(alices_encrypted_route,bobs_route,alice.getPaillierPublicKey(), encryptedzero);
+            List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route,bobs_route,alice.getPaillierPublicKey(), encryptedzero);
             System.out.println(result);
-
-
-        }catch (IOException | ClassNotFoundException | HomomorphicException e){
+        }
+        catch (IOException | ClassNotFoundException | HomomorphicException e){
             e.printStackTrace();
         }
     }

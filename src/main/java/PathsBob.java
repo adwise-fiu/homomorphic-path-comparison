@@ -56,7 +56,6 @@ public class PathsBob {
     public static void main(String[] args) {
 
         PathsBob iam = new PathsBob(9200,2048);
-
         bob_joye bob = new bob_joye(iam.paillier, iam.dgk);
         String my_path = new File("cryptroutefile.txt").toString();
 
