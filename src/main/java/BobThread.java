@@ -9,10 +9,10 @@ public class BobThread implements Runnable {
     private final int port;
     private static ServerSocket bob_socket = null;
     private static Socket bob_client = null;
-    private final bob_joye thisguy;
+    private final bob_joye this_guy;
 
-    public BobThread(bob_joye thisguy, int port) {
-        this.thisguy = thisguy;
+    public BobThread(bob_joye this_guy, int port) {
+        this.this_guy = this_guy;
         this.port = port;
     }
 
@@ -20,29 +20,27 @@ public class BobThread implements Runnable {
         try {
             bob_socket = new ServerSocket(port);
             bob_client = bob_socket.accept();
-            thisguy.set_socket(bob_client);
-            thisguy.sendPublicKeys();
+            this_guy.set_socket(bob_client);
+            this_guy.sendPublicKeys();
 
+            while (true) {
 
-           while (true) {
-
-               int var = 3;
-               var = thisguy.readInt();
+               int var = this_guy.readInt();
 
                if (var == 1) {
-                   thisguy.multiplication();
+                   this_guy.multiplication();
                }
 
                if (var == 2) {
-                   thisguy.Protocol2();
+                   this_guy.Protocol2();
                }
 
                if (var == 0) {
                    break;
                }
            }
-
-        } catch (IOException | ClassNotFoundException | HomomorphicException e) {
+        }
+        catch (IOException | ClassNotFoundException | HomomorphicException e) {
             e.printStackTrace();
         }
         finally {

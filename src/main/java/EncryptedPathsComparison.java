@@ -34,7 +34,7 @@ public class EncryptedPathsComparison {
        }
     }
 
-    //This method runs Protocol2 to find Min value. I could've just used Max but it reads easier this way later on.
+    //This method runs Protocol2 to find Min value. I could've just used Max, but it reads easier this way later on.
     public BigInteger encryptedMinBigInt(BigInteger a, BigInteger b){
         boolean z = false;
         try {
@@ -110,7 +110,7 @@ public class EncryptedPathsComparison {
             BigInteger w = encryptedMaxBigInt(p.y,r.y);
             BigInteger x = encryptedMinBigInt(p.y,r.y);
 
-            /*I have to run these one at a time to work with BobThread. Maybe passing 4 and calling
+            /*I have to run these at a time to work with BobThread. Maybe passing 4 and calling
             Protocol2 4 times in BobThread would speed things up.
              */
 
@@ -136,10 +136,10 @@ public class EncryptedPathsComparison {
                                         BigIntPoint p2, BigIntPoint q2,
                                         PaillierPublicKey public_key, BigInteger encrypted_zero)
     {
-        int o1 = encryptedOrientation(p1,q1,p2,public_key,encrypted_zero);
-        int o2 = encryptedOrientation(p1,q1,q2,public_key,encrypted_zero);
-        int o3 = encryptedOrientation(p2,q2,p1,public_key,encrypted_zero);
-        int o4 = encryptedOrientation(p2,q2,q1,public_key,encrypted_zero);
+        int o1 = encryptedOrientation(p1, q1, p2, public_key, encrypted_zero);
+        int o2 = encryptedOrientation(p1, q1, q2, public_key, encrypted_zero);
+        int o3 = encryptedOrientation(p2, q2, p1, public_key, encrypted_zero);
+        int o4 = encryptedOrientation(p2, q2, q1, public_key, encrypted_zero);
 
         if (o1 != o2 && o3 != o4) {
             return true;
@@ -184,13 +184,14 @@ public class EncryptedPathsComparison {
         // My concern is that Bob might need to be able to multi-thread his part of the protocols to see proper speed gains
         for (int j = 0; j < (theirs.size() - 1); j++) {
             for (int i = 0; i < (mine.size() - 1); i++) {
-                if(encryptedDoIntersect(mine.get(i), mine.get(i+1),theirs.get(j),
-                        theirs.get(j+1), public_key, encrypted_zero)) {
+                if(encryptedDoIntersect(mine.get(i), mine.get(i + 1), theirs.get(j),
+                        theirs.get(j + 1), public_key, encrypted_zero)) {
                     index.add(i);
                     index.add(i+1);
                 }
             }
         }
+        // This will terminate bobThread, see line 38
         try {
             myself.writeInt(0);
         }

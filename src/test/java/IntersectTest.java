@@ -45,19 +45,21 @@ public class IntersectTest {
         // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String line;
-
             alice_joye alice = new alice_joye();
             bob_joye bob = new bob_joye(paillier, dgk);
-            Thread multiply = new Thread(new BobThread(bob,9200));
-            multiply.start();
-            alice.set_socket(new Socket("127.0.0.1",9200));
-            alice.receivePublicKeys();
-
-            PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
-            BigInteger encrypted_zero = PaillierCipher.encrypt(0, paillier_public_key);
-            EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
 
             while ((line = br.readLine()) != null) {
+                // Set-up
+                Thread multiply = new Thread(new BobThread(bob,9200));
+                multiply.start();
+                alice.set_socket(new Socket("127.0.0.1",9200));
+                alice.receivePublicKeys();
+
+                PaillierPublicKey paillier_public_key = (PaillierPublicKey) paillier.getPublic();
+                BigInteger encrypted_zero = PaillierCipher.encrypt(0, paillier_public_key);
+                EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
+
+                // Parse data and run-test
                 String[] values = line.split(",");
                 String ownroute = values[0];
                 String cryptroute = values[1];
@@ -97,11 +99,16 @@ public class IntersectTest {
                 for (Integer i: indexes) {
                     System.out.println(i);
                 }
+
+                // Bob Thread should be complete, so clean up the Thread
+                // This makes sure that port 9200 will be ready when we restart the for loop
+                multiply.join();
+
                 // If the index is empty, no collision
                 assertEquals(!indexes.isEmpty(), will_collide);
             }
         }
-        catch (IOException | ClassNotFoundException | HomomorphicException e) {
+        catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
             System.err.println("Error reading files" + e.getMessage());
         }
     }
