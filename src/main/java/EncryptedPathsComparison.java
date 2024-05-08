@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class EncryptedPathsComparison implements Runnable {
+public class EncryptedPathsComparison {
 
     private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
@@ -199,10 +199,5 @@ public class EncryptedPathsComparison implements Runnable {
         wait_time = wait_time/1000000;
         logger.info(String.format("[Alice] completed intersection checking %f ms", wait_time));
         return index;
-    }
-
-    @Override
-    public void run() {
-
     }
 }
