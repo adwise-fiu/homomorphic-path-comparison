@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 import security.dgk.DGKKeyPairGenerator;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierKeyPairGenerator;
-import security.socialistmillionaire.alice_joye;
-import security.socialistmillionaire.bob_joye;
+import security.socialistmillionaire.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -41,8 +41,8 @@ public class IntersectTest {
         // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String line;
-            alice_joye alice = new alice_joye();
-            bob_joye bob = new bob_joye(paillier, dgk);
+            alice alice = new alice_joye();
+            bob bob = new bob_joye(paillier, dgk);
 
             alice.setDGKMode(false);
             bob.setDGKMode(false);
@@ -77,7 +77,7 @@ public class IntersectTest {
                 List<Integer> indexes = testing.encryptedWhereIntersection(encryptedownroute_list,
                         encryptedcryptroute_list);
 
-                System.out.println("Indexes");
+                System.out.println("Index is Empty: " + indexes.isEmpty() + "expected value is " + will_collide);
                 for (Integer i: indexes) {
                     System.out.println(i);
                 }

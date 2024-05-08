@@ -1,7 +1,7 @@
 import security.dgk.DGKOperations;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
-import security.socialistmillionaire.alice_joye;
+import security.socialistmillionaire.alice;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ public class EncryptedPathsComparison {
 
     private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
-    public EncryptedPathsComparison(alice_joye myself) {
+    public EncryptedPathsComparison(alice myself) {
         this.myself = myself;
     }
 
-    private final alice_joye myself;
+    private final alice myself;
 
     // This method uses Protocol2 to find Max value.
     public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b)
