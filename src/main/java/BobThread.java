@@ -7,8 +7,9 @@ import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
 import security.socialistmillionaire.bob_joye;
 
-
+// Used only for testing
 public class BobThread implements Runnable {
+
     private static final Logger logger = LogManager.getLogger(BobThread.class);
     private final int port;
     private final bob_joye bob;

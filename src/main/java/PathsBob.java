@@ -82,5 +82,6 @@ public class PathsBob {
                 } // while
             }
         }
+        System.out.println("Note that Bob written " + bob.get_bytes_sent() + " bytes to Alice");
     }
 }

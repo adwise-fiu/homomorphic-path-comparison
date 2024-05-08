@@ -69,7 +69,7 @@ public class IntersectTest {
                 List<BigIntPoint> ownroute_list = shared.read_all_paths(ownroute);
                 List<BigIntPoint> cryptroute_list = shared.read_all_paths(cryptroute);
 
-                // Encrypt routes, DGK
+                // Encrypt routes, Paillier
                 List<BigIntPoint> encryptedownroute_list = shared.encrypt_paillier(ownroute_list, bob.getPaillierPublicKey());
                 List<BigIntPoint> encryptedcryptroute_list = shared.encrypt_paillier(cryptroute_list, bob.getPaillierPublicKey());
 
@@ -125,11 +125,11 @@ public class IntersectTest {
     @Test
     public void test_intersections() throws Exception {
         String answers_path = new File("data/testroutine.csv").toString();
-        //Parse CSV file
-        try (BufferedReader br = new BufferedReader(new FileReader(answers_path))){
+        // Parse CSV file
+        try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String assertstring;
             String line;
-            while ((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String [] values = line.split(",");
                 String ownroute = values[0];
                 String cryptroute = values[1];

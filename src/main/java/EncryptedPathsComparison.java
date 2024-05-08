@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class EncryptedPathsComparison {
+public class EncryptedPathsComparison implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
@@ -131,10 +131,6 @@ public class EncryptedPathsComparison {
             BigInteger w = encryptedMaxBigInt(p.y, r.y);
             BigInteger x = encryptedMinBigInt(p.y, r.y);
 
-            /*I have to run these at a time to work with BobThread. Maybe passing 4 and calling
-            Protocol2 4 times in BobThread would speed things up.
-             */
-
             myself.writeInt(2);
             boolean a = myself.Protocol2(u, q.x);
             myself.writeInt(2);
@@ -180,20 +176,6 @@ public class EncryptedPathsComparison {
         return false;
     }
 
-    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
-        for (int i = 0; i < (mine.size() - 1); i++) {
-            for (int j = 0; j < (theirs.size() - 1); j++) {
-                if (encryptedDoIntersect(mine.get(i), mine.get(i + 1),
-                        theirs.get(j), theirs.get(j + 1))) {
-                        System.out.println("Intersection!");
-                        return true;
-                    }
-                }
-            }
-        System.out.println("No intersections!");
-        return false;
-    }
-
     public List<Integer> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)
             throws IOException, HomomorphicException {
         List<Integer> index = new ArrayList<>();
@@ -217,5 +199,10 @@ public class EncryptedPathsComparison {
         wait_time = wait_time/1000000;
         logger.info(String.format("[Alice] completed intersection checking %f ms", wait_time));
         return index;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

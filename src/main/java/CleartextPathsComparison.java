@@ -1,4 +1,3 @@
-import java.lang.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,39 +107,19 @@ public class CleartextPathsComparison {
           return false;
      }
 
-     //Returns the two endpoints of the line segment of the unencrypted path where an intersection occurs, otherwise returns (0,0) (0,0)
+     // Returns the two endpoints of the line segment of the unencrypted path where an intersection occurs,
+     // otherwise returns (0,0) (0,0)
      public static List<BigIntPoint> whereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
           List<BigIntPoint> segments = new ArrayList<>();
 
           for (int j = 0; j < (theirs.size() - 1); j++) {
                for (int i = 0; i < (mine.size() - 1); i++) {
                     if (doIntersect(mine.get(i), mine.get(i + 1), theirs.get(j), theirs.get(j + 1))) {
-
                          segments.add(mine.get(i));
                          segments.add(mine.get(i + 1));
                     }
                }
           }
           return segments;
-     }
-
-
-     public static void main(String[] args) {
-          /*List<BigIntPoint> ownroute;
-          List<BigIntPoint> cryptroute;
-          List<BigIntPoint> intersections;
-
-          // When this is migrated, we can set a standard file path name.
-          String ownroutefile = "ownroutefile.txt";
-          String cryptroutefile = "cryptroutefile.txt";
-
-          ownroute = read_all_paths(ownroutefile);
-          cryptroute = read_all_paths(cryptroutefile);
-
-
-          intersections = whereIntersection(ownroute, cryptroute);
-
-          for (int i = 0; i < intersections.size() - 1; i = i + 2) {
-               System.out.printf("Intersection between (%d,%d) and (%d,%d)%n", intersections.get(i).x.intValue(), intersections.get(i).y.intValue(), intersections.get(i + 1).x.intValue(), intersections.get(i + 1).y.intValue());*/
      }
 }
