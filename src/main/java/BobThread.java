@@ -1,60 +1,47 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
 import security.socialistmillionaire.bob_joye;
 
 
 public class BobThread implements Runnable {
+    private static final Logger logger = LogManager.getLogger(BobThread.class);
     private final int port;
-    private static ServerSocket bob_socket = null;
-    private static Socket bob_client = null;
-    private final bob_joye thisguy;
+    private final bob_joye bob;
 
-    public BobThread(bob_joye thisguy, int port) {
-        this.thisguy = thisguy;
+    public BobThread(bob_joye bob, int port) {
+        this.bob = bob;
         this.port = port;
     }
 
     public void run() {
-        try {
-            bob_socket = new ServerSocket(port);
-            bob_client = bob_socket.accept();
-            thisguy.set_socket(bob_client);
-            thisguy.sendPublicKeys();
+        try (ServerSocket bob_socket = new ServerSocket(port)) {
+            try (Socket bob_client = bob_socket.accept()) {
+                bob.set_socket(bob_client);
+                bob.sendPublicKeys();
 
+                while (true) {
+                    int var = bob.readInt();
+                    if (var == 1) {
+                        bob.multiplication();
+                    }
 
-           while (true) {
+                    if (var == 2) {
+                        bob.Protocol2();
+                    }
 
-               int var = 3;
-               var = thisguy.readInt();
-
-               if (var == 1) {
-                   thisguy.multiplication();
-               }
-
-               if (var == 2) {
-                   thisguy.Protocol2();
-               }
-
-               if (var == 0) {
-                   break;
-               }
-           }
-
-        } catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bob_client != null) {
-                    bob_client.close();
-                }
-                if (bob_socket != null) {
-                    bob_socket.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+                    if (var == 0) {
+                        break;
+                    }
+                } // while
             }
+        }
+        catch (IOException | ClassNotFoundException | HomomorphicException e) {
+            logger.fatal(e);
         }
     }
 }
