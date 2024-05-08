@@ -25,6 +25,7 @@ public class shared {
     public static ValidatingObjectInputStream get_ois(Socket socket) throws IOException {
         ValidatingObjectInputStream ois = new ValidatingObjectInputStream(socket.getInputStream());
         ois.accept(
+                java.util.ArrayList.class,
                 java.util.List.class,
                 BigIntPoint.class,
                 java.lang.Number.class,

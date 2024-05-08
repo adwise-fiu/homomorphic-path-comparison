@@ -97,6 +97,7 @@ application {
 tasks.register('runWithAgent', JavaExec) {
     mainClass.set(project.findProperty("chooseRole").toString())
     classpath = sourceSets.main.runtimeClasspath
+    mainClass.set(project.findProperty("chooseRole").toString())
 
     // Set JVM arguments to include your agent
     jvmArgs = [
