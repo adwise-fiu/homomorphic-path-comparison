@@ -3,7 +3,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
 import security.socialistmillionaire.alice_joye;
-import security.socialistmillionaire.bob_joye;
 
 import java.io.*;
 import java.net.Socket;
@@ -75,6 +74,7 @@ public class SpeedTestingAlice {
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
                 List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route);
                 System.out.println(result);
+                System.out.println("Note that alice written " + alice.get_bytes_sent() + " bytes to Bob");
             }
         } catch (IOException | ClassNotFoundException | HomomorphicException e) {
             logger.fatal(e.getStackTrace());

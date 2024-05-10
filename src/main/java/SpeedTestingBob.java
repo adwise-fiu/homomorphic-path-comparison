@@ -7,7 +7,6 @@ import java.util.List;
 import security.dgk.DGKKeyPairGenerator;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierKeyPairGenerator;
-import security.socialistmillionaire.alice_joye;
 import security.socialistmillionaire.bob_joye;
 
 public class SpeedTestingBob {
@@ -90,7 +89,8 @@ public class SpeedTestingBob {
                         } // while
                     }
                 }
-            }
+            } // while
+            System.out.println("Note that Bob written " + bob.get_bytes_sent() + " bytes to Alice");
         }
     }
 }
