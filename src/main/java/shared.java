@@ -7,7 +7,9 @@ import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
 import security.paillier.PaillierPublicKey;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -47,11 +49,23 @@ public class shared {
         return parse_line(route);
     }
 
+    public static List<BigIntPoint> read_one_line(String file_path, int line_index){
+        String route = null;
+        try (LineNumberReader rdr = new LineNumberReader(new FileReader(file_path))) {
+            rdr.setLineNumber(line_index);
+            route = rdr.readLine();
+        }
+        catch (IOException e) {
+            logger.fatal(e);
+        }
+        return parse_line(route);
+    }
+
     public static List<BigIntPoint> parse_line(String input) {
         List<BigIntPoint> result = new ArrayList<>();
 
         //Define a regex pattern for extracting pairs of numbers within parentheses
-        Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
+        Pattern pattern = Pattern.compile("\\((-?\\d+),(-?\\d+)\\)");
 
         //Use a Matcher to find matches in the input string
         Matcher matcher = pattern.matcher(input);

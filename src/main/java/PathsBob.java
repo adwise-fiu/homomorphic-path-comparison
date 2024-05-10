@@ -11,8 +11,8 @@ import security.socialistmillionaire.bob_joye;
 
 public class PathsBob {
 
-    private KeyPair paillier;
-    private KeyPair dgk;
+    KeyPair paillier;
+    KeyPair dgk;
 
     public PathsBob(int key_size) {
         generate_keys(key_size);
