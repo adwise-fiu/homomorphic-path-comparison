@@ -54,18 +54,19 @@ public class SpeedTestingBob {
         String answers_path = new File(input_file).toString();
 
         // Parse CSV file
-        try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        try (ServerSocket bob_socket = new ServerSocket(port)) {
 
-                List<BigIntPoint> bob_route = shared.parse_line(line);
-                List<BigIntPoint> bob_route_encrypted = shared.encrypt_paillier(bob_route, bob.getPaillierPublicKey());
-                System.out.println("Waiting on Alice");
+            System.out.println("Waiting on Alice");
+            try (Socket bob_client = bob_socket.accept()) {
+                bob.set_socket(bob_client);
+                bob.sendPublicKeys();
 
-                try (ServerSocket bob_socket = new ServerSocket(port)) {
-                    try (Socket bob_client = bob_socket.accept()) {
-                        bob.set_socket(bob_client);
-                        bob.sendPublicKeys();
+                try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
+                    String line;
+
+                    while ((line = br.readLine()) != null) {
+                        List<BigIntPoint> bob_route = shared.parse_line(line);
+                        List<BigIntPoint> bob_route_encrypted = shared.encrypt_paillier(bob_route, bob.getPaillierPublicKey());
 
                         ObjectOutputStream objectOutput = new ObjectOutputStream(bob_client.getOutputStream());
                         objectOutput.writeObject(bob_route_encrypted);

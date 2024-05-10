@@ -42,19 +42,21 @@ public class SpeedTestingAlice {
 
         // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
-            String line;
 
+            String line;
+            // Set the connection to Bob
+            SpeedTestingAlice paths_alice = new SpeedTestingAlice(port);
+            Socket socket = new Socket(ip_address, paths_alice.port);
+            alice.set_socket(socket);
+            alice.receivePublicKeys();
 
             while ((line = br.readLine()) != null) {
                 // Execute the program
-                SpeedTestingAlice paths_alice = new SpeedTestingAlice(port);
                 List<BigIntPoint> alice_route = shared.parse_line(line);
 
                 // Only use the indexed line in the alice_segments file
                 List<BigIntPoint> bobs_route = new ArrayList<>();
-                Socket socket = new Socket(ip_address, paths_alice.port);
-                alice.set_socket(socket);
-                alice.receivePublicKeys();
+
 
                 ValidatingObjectInputStream input = shared.get_ois(socket);
                 Object object = input.readObject();
