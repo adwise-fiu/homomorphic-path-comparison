@@ -48,20 +48,18 @@ public class SpeedTestingBob {
             System.exit(1);
         }
 
+        SpeedTestingBob iam = new SpeedTestingBob(2048);
+        bob_joye bob = new bob_joye(iam.paillier, iam.dgk);
+        bob.setDGKMode(false);
         String answers_path = new File(input_file).toString();
+
         // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String line;
-            PathsBob iam = new PathsBob(2048);
-            bob_joye bob = new bob_joye(iam.paillier, iam.dgk);
-
-            bob.setDGKMode(false);
-
             while ((line = br.readLine()) != null) {
 
                 List<BigIntPoint> bob_route = shared.parse_line(line);
                 List<BigIntPoint> bob_route_encrypted = shared.encrypt_paillier(bob_route, bob.getPaillierPublicKey());
-
                 System.out.println("Waiting on Alice");
 
                 try (ServerSocket bob_socket = new ServerSocket(port)) {
@@ -89,7 +87,7 @@ public class SpeedTestingBob {
                         } // while
                     }
                 }
-            } // while
+            } // while, each line of file
             System.out.println("Note that Bob written " + bob.get_bytes_sent() + " bytes to Alice");
         }
     }

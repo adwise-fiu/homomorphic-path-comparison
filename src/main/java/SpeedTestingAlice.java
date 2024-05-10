@@ -11,8 +11,7 @@ import java.util.List;
 
 public class SpeedTestingAlice {
 
-    private static final Logger logger = LogManager.getLogger(PathsAlice.class);
-
+    private static final Logger logger = LogManager.getLogger(SpeedTestingAlice.class);
     private final int port;
 
     public SpeedTestingAlice(int port) {
@@ -37,24 +36,23 @@ public class SpeedTestingAlice {
             System.exit(1);
         }
 
+        alice_joye alice = new alice_joye();
+        alice.setDGKMode(false);
         String answers_path = new File(input_file).toString();
+
         // Parse CSV file
         try (BufferedReader br = new BufferedReader(new FileReader(answers_path))) {
             String line;
-            alice_joye alice = new alice_joye();
 
-            alice.setDGKMode(false);
 
             while ((line = br.readLine()) != null) {
                 // Execute the program
-                SpeedTestingAlice pathsalice = new SpeedTestingAlice(port);
+                SpeedTestingAlice paths_alice = new SpeedTestingAlice(port);
                 List<BigIntPoint> alice_route = shared.parse_line(line);
 
-                //Only use the indexed line in the alice_segments file
-
+                // Only use the indexed line in the alice_segments file
                 List<BigIntPoint> bobs_route = new ArrayList<>();
-
-                Socket socket = new Socket(ip_address, pathsalice.port);
+                Socket socket = new Socket(ip_address, paths_alice.port);
                 alice.set_socket(socket);
                 alice.receivePublicKeys();
 
@@ -70,14 +68,14 @@ public class SpeedTestingAlice {
                 assert !bobs_route.isEmpty();
 
                 List<BigIntPoint> alices_encrypted_route = shared.encrypt_paillier(alice_route, alice.getPaillierPublicKey());
-
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
                 List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route);
                 System.out.println(result);
                 System.out.println("Note that alice written " + alice.get_bytes_sent() + " bytes to Bob");
             }
         } catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            logger.fatal(e.getStackTrace());
+            e.printStackTrace();
+            logger.fatal(e);
         }
     }
 }
