@@ -1,7 +1,7 @@
 import security.dgk.DGKOperations;
 import security.misc.HomomorphicException;
 import security.paillier.PaillierCipher;
-import security.socialistmillionaire.alice_joye;
+import security.socialistmillionaire.alice;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ public class EncryptedPathsComparison {
 
     private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
-    public EncryptedPathsComparison(alice_joye myself) {
+    public EncryptedPathsComparison(alice myself) {
         this.myself = myself;
     }
 
-    private final alice_joye myself;
+    private final alice myself;
 
     // This method uses Protocol2 to find Max value.
     public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b)
@@ -131,10 +131,6 @@ public class EncryptedPathsComparison {
             BigInteger w = encryptedMaxBigInt(p.y, r.y);
             BigInteger x = encryptedMinBigInt(p.y, r.y);
 
-            /*I have to run these at a time to work with BobThread. Maybe passing 4 and calling
-            Protocol2 4 times in BobThread would speed things up.
-             */
-
             myself.writeInt(2);
             boolean a = myself.Protocol2(u, q.x);
             myself.writeInt(2);
@@ -177,20 +173,6 @@ public class EncryptedPathsComparison {
             return true;
         }
 
-        return false;
-    }
-
-    public boolean encryptedPathIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs) {
-        for (int i = 0; i < (mine.size() - 1); i++) {
-            for (int j = 0; j < (theirs.size() - 1); j++) {
-                if (encryptedDoIntersect(mine.get(i), mine.get(i + 1),
-                        theirs.get(j), theirs.get(j + 1))) {
-                        System.out.println("Intersection!");
-                        return true;
-                    }
-                }
-            }
-        System.out.println("No intersections!");
         return false;
     }
 

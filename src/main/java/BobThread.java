@@ -5,33 +5,35 @@ import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import security.misc.HomomorphicException;
+import security.socialistmillionaire.bob;
 import security.socialistmillionaire.bob_joye;
 
-
+// Used only for testing
 public class BobThread implements Runnable {
+
     private static final Logger logger = LogManager.getLogger(BobThread.class);
     private final int port;
-    private final bob_joye bob;
+    private final bob bob_connect;
 
-    public BobThread(bob_joye bob, int port) {
-        this.bob = bob;
+    public BobThread(bob bob_connect, int port) {
+        this.bob_connect = bob_connect;
         this.port = port;
     }
 
     public void run() {
         try (ServerSocket bob_socket = new ServerSocket(port)) {
             try (Socket bob_client = bob_socket.accept()) {
-                bob.set_socket(bob_client);
-                bob.sendPublicKeys();
+                bob_connect.set_socket(bob_client);
+                bob_connect.sendPublicKeys();
 
                 while (true) {
-                    int var = bob.readInt();
+                    int var = bob_connect.readInt();
                     if (var == 1) {
-                        bob.multiplication();
+                        bob_connect.multiplication();
                     }
 
                     if (var == 2) {
-                        bob.Protocol2();
+                        bob_connect.Protocol2();
                     }
 
                     if (var == 0) {

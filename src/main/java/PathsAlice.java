@@ -69,5 +69,6 @@ public class PathsAlice {
         catch (IOException | ClassNotFoundException | HomomorphicException e){
             logger.fatal(e.getStackTrace());
         }
+        System.out.println("Note that alice written " + alice.get_bytes_sent() + " bytes to Bob");
     }
 }

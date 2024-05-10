@@ -97,12 +97,17 @@ application {
 tasks.register('runWithAgent', JavaExec) {
     mainClass.set(project.findProperty("chooseRole").toString())
     classpath = sourceSets.main.runtimeClasspath
-    mainClass.set(project.findProperty("chooseRole").toString())
 
     // Set JVM arguments to include your agent
     jvmArgs = [
             '-javaagent:libs/InstrumentationAgent.jar'
     ]
+
+    // Pass command-line arguments to your application
+    // gradle run -PchooseRole=PathsBob -Pargs='./data/ownroute3.txt 9000'
+    if (project.hasProperty('args')) {
+        args project.args.split(' ')
+    }
 }
 
 // Configure the 'run' task to depend on 'runWithAgent'
