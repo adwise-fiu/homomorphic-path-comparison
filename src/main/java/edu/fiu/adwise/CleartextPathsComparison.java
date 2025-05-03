@@ -1,3 +1,7 @@
+package edu.fiu.adwise;
+
+import edu.fiu.adwise.structs.BigIntPoint;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -5,7 +9,6 @@ import java.util.List;
 
 // Starting with this:
 // https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
-
 public class CleartextPathsComparison {
 
      // Returns the larger of two BigIntegers

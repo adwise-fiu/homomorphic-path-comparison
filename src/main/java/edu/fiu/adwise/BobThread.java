@@ -1,12 +1,13 @@
+package edu.fiu.adwise;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import security.misc.HomomorphicException;
-import security.socialistmillionaire.bob;
-import security.socialistmillionaire.bob_joye;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.bob;
 
 // Used only for testing
 public class BobThread implements Runnable {

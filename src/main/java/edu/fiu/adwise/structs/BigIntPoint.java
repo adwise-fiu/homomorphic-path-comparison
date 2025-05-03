@@ -1,10 +1,12 @@
+package edu.fiu.adwise.structs;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 
 public class BigIntPoint implements Serializable
 {
-    BigInteger x;
-    BigInteger y;
+    public BigInteger x;
+    public BigInteger y;
 
     public BigIntPoint(BigInteger x, BigInteger y) {
         this.x = x;

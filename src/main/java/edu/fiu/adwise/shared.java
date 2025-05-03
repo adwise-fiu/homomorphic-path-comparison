@@ -1,11 +1,14 @@
+package edu.fiu.adwise;
+
+import edu.fiu.adwise.structs.BigIntPoint;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import security.dgk.DGKOperations;
-import security.dgk.DGKPublicKey;
-import security.misc.HomomorphicException;
-import security.paillier.PaillierCipher;
-import security.paillier.PaillierPublicKey;
+import edu.fiu.adwise.homomorphic_encryption.dgk.DGKOperations;
+import edu.fiu.adwise.homomorphic_encryption.dgk.DGKPublicKey;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierCipher;
+import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierPublicKey;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -96,7 +99,7 @@ public class shared {
     }
 
     public static List<BigIntPoint> encrypt_dgk(List<BigIntPoint> input_path,
-                                                     DGKPublicKey dgk_public_key) {
+                                                     DGKPublicKey dgk_public_key) throws HomomorphicException {
         List<BigIntPoint> encrypted_path = new ArrayList<>();
         for (BigIntPoint bigIntPoint : input_path) {
             BigInteger their_x = DGKOperations.encrypt(bigIntPoint.x.longValue(), dgk_public_key);

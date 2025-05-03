@@ -1,13 +1,16 @@
+package edu.fiu.adwise;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.util.List;
 
-import security.dgk.DGKKeyPairGenerator;
-import security.misc.HomomorphicException;
-import security.paillier.PaillierKeyPairGenerator;
-import security.socialistmillionaire.bob_joye;
+import edu.fiu.adwise.structs.BigIntPoint;
+import edu.fiu.adwise.homomorphic_encryption.dgk.DGKKeyPairGenerator;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.bob_joye;
 
 public class SpeedTestingBob {
     private KeyPair paillier;

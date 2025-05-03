@@ -1,8 +1,11 @@
+package edu.fiu.adwise;
+
+import edu.fiu.adwise.structs.BigIntPoint;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import security.misc.HomomorphicException;
-import security.socialistmillionaire.alice_joye;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.alice_joye;
 
 import java.io.*;
 import java.net.Socket;
@@ -56,7 +59,6 @@ public class SpeedTestingAlice {
 
                 // Only use the indexed line in the alice_segments file
                 List<BigIntPoint> bobs_route = new ArrayList<>();
-
 
                 ValidatingObjectInputStream input = shared.get_ois(socket);
                 Object object = input.readObject();

@@ -1,7 +1,10 @@
-import security.dgk.DGKOperations;
-import security.misc.HomomorphicException;
-import security.paillier.PaillierCipher;
-import security.socialistmillionaire.alice;
+package edu.fiu.adwise;
+
+import edu.fiu.adwise.structs.BigIntPoint;
+import edu.fiu.adwise.homomorphic_encryption.dgk.DGKOperations;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierCipher;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.alice;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
