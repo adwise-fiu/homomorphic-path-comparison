@@ -1,7 +1,5 @@
-# Level-Site-PPDT
-
-## Libraries
-* crypto.jar library is from this [repository](https://github.com/AndrewQuijano/Homomorphic_Encryption)
+# Privacy-Preserving Drone Navigation Through Homomorphic Encryption for Collision Avoidance
+[![Build Gradle project](https://github.com/adwise-fiu/homomorphic-path-comparison/actions/workflows/build-gradle-project.yml/badge.svg)](https://github.com/adwise-fiu/homomorphic-path-comparison/actions/workflows/build-gradle-project.yml)
 
 ## Installation
 It is a requirement to install [SDK](https://sdkman.io/install) to install Gradle.
@@ -13,7 +11,7 @@ sdk install gradle
 ```
 
 ## Using the Code
-For now you can run 
+For now, you can run 
 ```bash
 gradle run -PchooseRole=CleartextPathsComparison
 ```

@@ -23,10 +23,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class providing shared methods for handling paths, encryption, and deserialization.
+ */
 public class shared {
 
+    /** Logger for logging messages and errors. */
     private static final Logger logger = LogManager.getLogger(shared.class);
 
+    /**
+     * Creates a ValidatingObjectInputStream for secure deserialization from a socket.
+     *
+     * @param socket the socket to read from
+     * @return a ValidatingObjectInputStream for deserialization
+     * @throws IOException if an I/O error occurs
+     */
     public static ValidatingObjectInputStream get_ois(Socket socket) throws IOException {
         ValidatingObjectInputStream ois = new ValidatingObjectInputStream(socket.getInputStream());
         ois.accept(
@@ -41,39 +52,56 @@ public class shared {
         return ois;
     }
 
+    /**
+     * Reads all paths from a file and parses them into a list of BigIntPoint objects.
+     *
+     * @param file_path the path to the file
+     * @return a list of BigIntPoint objects representing the paths
+     */
     public static List<BigIntPoint> read_all_paths(String file_path) {
         String route = null;
         try {
             route = Files.readString(Path.of(file_path), StandardCharsets.UTF_8);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.fatal(e);
         }
         return parse_line(route);
     }
 
-    public static List<BigIntPoint> read_one_line(String file_path, int line_index){
+    /**
+     * Reads a specific line from a file and parses it into a list of BigIntPoint objects.
+     *
+     * @param file_path the path to the file
+     * @param line_index the index of the line to read
+     * @return a list of BigIntPoint objects representing the line
+     */
+    public static List<BigIntPoint> read_one_line(String file_path, int line_index) {
         String route = null;
         try (LineNumberReader rdr = new LineNumberReader(new FileReader(file_path))) {
             rdr.setLineNumber(line_index);
             route = rdr.readLine();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.fatal(e);
         }
         return parse_line(route);
     }
 
+    /**
+     * Parses a string containing coordinate pairs into a list of BigIntPoint objects.
+     *
+     * @param input the input string containing coordinate pairs
+     * @return a list of BigIntPoint objects
+     */
     public static List<BigIntPoint> parse_line(String input) {
         List<BigIntPoint> result = new ArrayList<>();
 
-        //Define a regex pattern for extracting pairs of numbers within parentheses
+        // Define a regex pattern for extracting pairs of numbers within parentheses
         Pattern pattern = Pattern.compile("\\((-?\\d+),(-?\\d+)\\)");
 
-        //Use a Matcher to find matches in the input string
+        // Use a Matcher to find matches in the input string
         Matcher matcher = pattern.matcher(input);
 
-        //Iterate through the matches and extract BigInteger values
+        // Iterate through the matches and extract BigInteger values
         while (matcher.find()) {
             String group1 = matcher.group(1);
             String group2 = matcher.group(2);
@@ -83,6 +111,14 @@ public class shared {
         return result;
     }
 
+    /**
+     * Encrypts a list of BigIntPoint objects using the Paillier encryption scheme.
+     *
+     * @param input_path the list of BigIntPoint objects to encrypt
+     * @param paillier_public_key the Paillier public key
+     * @return a list of encrypted BigIntPoint objects
+     * @throws HomomorphicException if an encryption error occurs
+     */
     public static List<BigIntPoint> encrypt_paillier(List<BigIntPoint> input_path,
                                                      PaillierPublicKey paillier_public_key)
             throws HomomorphicException {
@@ -98,8 +134,16 @@ public class shared {
         return encrypted_path;
     }
 
+    /**
+     * Encrypts a list of BigIntPoint objects using the DGK encryption scheme.
+     *
+     * @param input_path the list of BigIntPoint objects to encrypt
+     * @param dgk_public_key the DGK public key
+     * @return a list of encrypted BigIntPoint objects
+     * @throws HomomorphicException if an encryption error occurs
+     */
     public static List<BigIntPoint> encrypt_dgk(List<BigIntPoint> input_path,
-                                                     DGKPublicKey dgk_public_key) throws HomomorphicException {
+                                                DGKPublicKey dgk_public_key) throws HomomorphicException {
         List<BigIntPoint> encrypted_path = new ArrayList<>();
         for (BigIntPoint bigIntPoint : input_path) {
             BigInteger their_x = DGKOperations.encrypt(bigIntPoint.x.longValue(), dgk_public_key);

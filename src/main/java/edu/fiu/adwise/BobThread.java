@@ -9,18 +9,37 @@ import org.apache.logging.log4j.Logger;
 import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
 import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.bob;
 
-// Used only for testing
+/**
+ * A thread that handles communication with Bob in a homomorphic encryption protocol.
+ * This class listens for incoming connections, processes requests, and executes
+ * specific operations based on the received commands.
+ */
 public class BobThread implements Runnable {
 
+    /** Logger for logging messages and errors. */
     private static final Logger logger = LogManager.getLogger(BobThread.class);
+
+    /** The port number on which the server socket listens to. */
     private final int port;
+
+    /** The Bob instance used for handling cryptographic operations. */
     private final bob bob_connect;
 
+    /**
+     * Constructs a BobThread with the specified Bob instance and port number.
+     *
+     * @param bob_connect the Bob instance for cryptographic operations
+     * @param port the port number for the server socket
+     */
     public BobThread(bob bob_connect, int port) {
         this.bob_connect = bob_connect;
         this.port = port;
     }
 
+    /**
+     * Starts the thread to listen for incoming connections and process commands.
+     * Handles cryptographic operations based on the received commands.
+     */
     public void run() {
         try (ServerSocket bob_socket = new ServerSocket(port)) {
             try (Socket bob_client = bob_socket.accept()) {

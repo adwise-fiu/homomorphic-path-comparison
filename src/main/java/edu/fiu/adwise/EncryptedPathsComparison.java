@@ -12,17 +12,38 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Provides methods for encrypted path comparison using homomorphic encryption.
+ * Includes functionality for finding intersections and performing geometric operations
+ * on encrypted data.
+ */
 public class EncryptedPathsComparison {
 
+    /** Logger for logging messages and errors. */
     private static final Logger logger = LogManager.getLogger(EncryptedPathsComparison.class);
 
+    /** The Alice instance used for encrypted operations. */
+    private final alice myself;
+
+    /**
+     * Constructs an EncryptedPathsComparison instance with the specified Alice instance.
+     *
+     * @param myself the Alice instance for encrypted operations
+     */
     public EncryptedPathsComparison(alice myself) {
         this.myself = myself;
     }
 
-    private final alice myself;
-
-    // This method uses Protocol2 to find Max value.
+    /**
+     * Finds the minimum of two encrypted BigInteger values using Protocol2.
+     *
+     * @param a the first encrypted BigInteger
+     * @param b the second encrypted BigInteger
+     * @return the minimum encrypted BigInteger
+     * @throws IOException if an I/O error occurs
+     * @throws HomomorphicException if a homomorphic encryption error occurs
+     * @throws ClassNotFoundException if a class is not found during deserialization
+     */
     public BigInteger encryptedMaxBigInt(BigInteger a, BigInteger b)
             throws IOException, HomomorphicException, ClassNotFoundException {
 
@@ -36,8 +57,18 @@ public class EncryptedPathsComparison {
             return b;
         }
     }
-
-    //This method runs Protocol2 to find Min value. I could've just used Max, but it reads easier this way later on.
+    /**
+     * Finds the minimum of two encrypted BigInteger values using Protocol2.
+     * This method runs Protocol2 to find Min value.
+     * I could've just used Max, but it reads easier this way later on.
+     *
+     * @param a the first encrypted BigInteger
+     * @param b the second encrypted BigInteger
+     * @return the minimum encrypted BigInteger
+     * @throws IOException if an I/O error occurs
+     * @throws HomomorphicException if a homomorphic encryption error occurs
+     * @throws ClassNotFoundException if a class is not found during deserialization
+     */
     public BigInteger encryptedMinBigInt(BigInteger a, BigInteger b)
             throws IOException, HomomorphicException, ClassNotFoundException {
 
@@ -52,9 +83,16 @@ public class EncryptedPathsComparison {
         }
     }
 
-    //Checks orientation of 3 points, for use in doIntersect
+    /**
+     * Determines the orientation of three encrypted points, used in the doIntersect method.
+     * Used to check if the points are collinear, clockwise, or counterclockwise.
+     *
+     * @param p the first point
+     * @param q the second point
+     * @param r the third point
+     * @return 0 if collinear, 1 if clockwise, 2 if counterclockwise
+     */
     public int encryptedOrientation(BigIntPoint p, BigIntPoint q, BigIntPoint r) {
-
         BigInteger temp1;
         BigInteger temp2;
         BigInteger temp3;
@@ -124,11 +162,18 @@ public class EncryptedPathsComparison {
         }
     }
 
+    /**
+     * Checks if a point lies on a line segment defined by two other encrypted points.
+     *
+     * @param p the first endpoint of the segment
+     * @param q the point to check
+     * @param r the second endpoint of the segment
+     * @return true if q lies on the segment (p, r), false otherwise
+     */
     public boolean encryptedOnSegment (BigIntPoint p, BigIntPoint q, BigIntPoint r) {
         boolean z = false;
-
         try {
-            // I had to pull these out of comparison statement to work with BobThread
+            // I had to pull these out of a comparison statement to work with BobThread
             BigInteger u = encryptedMaxBigInt(p.x, r.x);
             BigInteger v = encryptedMinBigInt(p.x, r.x);
             BigInteger w = encryptedMaxBigInt(p.y, r.y);
@@ -142,19 +187,25 @@ public class EncryptedPathsComparison {
             boolean c = myself.Protocol2(w,q.y);
             myself.writeInt(2);
             boolean d = myself.Protocol2(q.y, x);
-
             z =  a && b && c && d;
-
         }
         catch (HomomorphicException | IOException | ClassNotFoundException e){
-            System.err.println("Exception in OnSegment" + e.getMessage());
+            logger.fatal("Exception in OnSegment {}", e.getMessage());
         }
         return z;
     }
 
+    /**
+     * Checks if two encrypted line segments intersect.
+     *
+     * @param p1 the first endpoint of the first segment
+     * @param q1 the second endpoint of the first segment
+     * @param p2 the first endpoint of the second segment
+     * @param q2 the second endpoint of the second segment
+     * @return true if the segments intersect, false otherwise
+     */
     public boolean encryptedDoIntersect(BigIntPoint p1, BigIntPoint q1,
                                         BigIntPoint p2, BigIntPoint q2) {
-
         int o1 = encryptedOrientation(p1, q1, p2);
         int o2 = encryptedOrientation(p1, q1, q2);
         int o3 = encryptedOrientation(p2, q2, p1);
@@ -179,6 +230,15 @@ public class EncryptedPathsComparison {
         return false;
     }
 
+    /**
+     * Finds the indices of the line segments in the encrypted paths where intersections occur.
+     *
+     * @param mine the first path as a list of encrypted BigIntPoint objects
+     * @param theirs the second path as a list of encrypted BigIntPoint objects
+     * @return a list of indices representing the intersecting segments
+     * @throws IOException if an I/O error occurs
+     * @throws HomomorphicException if a homomorphic encryption error occurs
+     */
     public List<Integer> encryptedWhereIntersection(List<BigIntPoint> mine, List<BigIntPoint> theirs)
             throws IOException, HomomorphicException {
         List<Integer> index = new ArrayList<>();
