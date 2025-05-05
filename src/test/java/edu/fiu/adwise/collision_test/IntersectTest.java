@@ -1,13 +1,4 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.assertEquals;
-
-import security.dgk.DGKKeyPairGenerator;
-import security.misc.HomomorphicException;
-import security.paillier.PaillierKeyPairGenerator;
-import security.socialistmillionaire.*;
+package edu.fiu.adwise.collision_test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +8,23 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+
+import edu.fiu.adwise.homomorphic_encryption.dgk.DGKKeyPairGenerator;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.*;
+
+import edu.fiu.adwise.BobThread;
+import edu.fiu.adwise.CleartextPathsComparison;
+import edu.fiu.adwise.EncryptedPathsComparison;
+import edu.fiu.adwise.shared;
+import edu.fiu.adwise.structs.BigIntPoint;
 
 public class IntersectTest {
     private static final Logger logger = LogManager.getLogger(IntersectTest.class);
@@ -91,7 +99,6 @@ public class IntersectTest {
             }
         }
         catch (IOException | ClassNotFoundException | HomomorphicException | InterruptedException e) {
-            e.printStackTrace();
             logger.fatal(e);
         }
     }

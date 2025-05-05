@@ -1,22 +1,44 @@
+package edu.fiu.adwise;
+
+import edu.fiu.adwise.structs.BigIntPoint;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import security.misc.HomomorphicException;
-import security.socialistmillionaire.alice_joye;
+import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
+import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.alice_joye;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for testing encrypted path comparisons using Alice's perspective.
+ * This class connects to Bob, receives encrypted paths, and performs intersection checks.
+ */
 public class SpeedTestingAlice {
 
+    /** Logger for logging messages and errors. */
     private static final Logger logger = LogManager.getLogger(SpeedTestingAlice.class);
+
+    /** The port number for connecting to Bob. */
     private final int port;
 
+    /**
+     * Constructs a SpeedTestingAlice instance with the specified port.
+     *
+     * @param port the port number for the connection
+     */
     public SpeedTestingAlice(int port) {
-            this.port = port;
-        }
+        this.port = port;
+    }
+
+    /**
+     * The main method for executing the program.
+     * Parses input arguments, connects to Bob, and performs encrypted path comparisons.
+     *
+     * @param args command-line arguments: file path, IP address, and port number
+     */
     public static void main(String[] args) {
 
         // Parse input
@@ -30,8 +52,7 @@ public class SpeedTestingAlice {
 
         try {
             port = Integer.parseInt(args[2]);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.err.println("Invalid port provided");
             System.exit(1);
         }
@@ -57,7 +78,6 @@ public class SpeedTestingAlice {
                 // Only use the indexed line in the alice_segments file
                 List<BigIntPoint> bobs_route = new ArrayList<>();
 
-
                 ValidatingObjectInputStream input = shared.get_ois(socket);
                 Object object = input.readObject();
                 if (object instanceof List<?>) {
@@ -68,15 +88,13 @@ public class SpeedTestingAlice {
                     }
                 }
                 assert !bobs_route.isEmpty();
-
-                List<BigIntPoint> alices_encrypted_route = shared.encrypt_paillier(alice_route, alice.getPaillierPublicKey());
+                List<BigIntPoint> alice_encrypted_route = shared.encrypt_paillier(alice_route, alice.getPaillierPublicKey());
                 EncryptedPathsComparison testing = new EncryptedPathsComparison(alice);
-                List<Integer> result = testing.encryptedWhereIntersection(alices_encrypted_route, bobs_route);
-                System.out.println(result);
-                System.out.println("Note that alice written " + alice.get_bytes_sent() + " bytes to Bob");
+                List<Integer> result = testing.encryptedWhereIntersection(alice_encrypted_route, bobs_route);
+                logger.info(result);
+                logger.info("Note that alice written {} bytes to Bob", alice.get_bytes_sent());
             }
         } catch (IOException | ClassNotFoundException | HomomorphicException e) {
-            e.printStackTrace();
             logger.fatal(e);
         }
     }

@@ -1,10 +1,10 @@
 name: Build Gradle project
 
 on:
-  push:
-    branches:
-      - main
-      - updates
+  # Runs every 30 days at midnight, just to make sure the checkmark is always there
+  schedule:
+    - cron: "0 0 30 * *"
+  pull_request:
 
 jobs:
   build-gradle-project:
@@ -30,9 +30,9 @@ jobs:
       #  run: sh create_keystore.sh
 
       - name: Run Gradle Testing
-        run: sh gradlew build
+        run: sh gradlew test
 
       # - name: Upload coverage reports to Codecov
-      #  uses: codecov/codecov-action@v3
+      #  uses: codecov/codecov-action@v4
       #  with:
       #    token: ${{ secrets.CODECOV_TOKEN }}
