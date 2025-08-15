@@ -30,9 +30,9 @@ jobs:
       #  run: sh create_keystore.sh
 
       - name: Run Gradle Testing
-        run: sh gradlew test
+        run: sh gradlew test jacocoTestReport -PcreateReports=true
 
-      # - name: Upload coverage reports to Codecov
-      #  uses: codecov/codecov-action@v4
-      #  with:
-      #    token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
