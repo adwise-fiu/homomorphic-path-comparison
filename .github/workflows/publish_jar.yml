@@ -51,6 +51,7 @@ jobs:
       # https://central.sonatype.com/api-doc
       - name: Create Bundle.zip file and use Publisher API
         run: |
+          chmod +x gradlew
           ./gradlew publishToMavenLocal
           bash create_bundle.sh $VERSION
           curl --request POST \
