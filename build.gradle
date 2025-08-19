@@ -147,7 +147,9 @@ publishing {
 
             pom {
                 name.set('drone-collision-avoidance')
-                description.set('')
+                description.set('This library provides a secure drone collision avoidance system using homomorphic encryption. ' +
+                        'It uses encrypted GPS coordinates to compute paths and avoid collisions without revealing sensitive location data. ' +
+                        'For now, to avoid collision, a drone changes altitude to avoid collision with another drone as it knows the path segment of collision')
                 url.set('https://github.com/adwise-fiu/homomorphic-path-comparison')
 
                 licenses {
@@ -196,7 +198,7 @@ signing {
     // Point to the key file on your machine, used for local testing
     def signingKeyFile = findProperty("signingKeyFile") ?: System.getenv("SIGNING_KEY_FILE")
     // gpg --armor --export-secret-keys YOUR_KEY_ID, export the key into a secret
-    def signingKey = findProperty("signingKey") ?: System.getenv("SIGNING_KEY")
+    def signingKey = findProperty("signingKey") ?: System.getenv("SIGNING_KEY") ?: ""
     // If no property or environment variable is found, it will be empty password
     def signingPassword = findProperty("signingPassword") ?: System.getenv("SIGNING_PASSWORD") ?: ""
 
@@ -211,6 +213,7 @@ signing {
     else {
         println("No signing key file found, will attempt to use in-memory key")
         if (signingKey) {
+            println("Using in-memory signing key")
             useInMemoryPgpKeys(signingKey.toString(), signingPassword?.toString())
             publishing.publications.named("mavenJava").configure { publication ->
                 signing.sign(publication)
