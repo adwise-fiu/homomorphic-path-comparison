@@ -73,7 +73,6 @@ jobs:
           SIGNING_PASSWORD : ${{ secrets.SIGNING_PASSWORD }}
           VERSION: ${{ env.RELEASE_VERSION }}
 
-      # You want to use the 'ciphercraft-<version>.jar' for your uses
       - name: Release the JAR file
         uses: softprops/action-gh-release@v2
         with:

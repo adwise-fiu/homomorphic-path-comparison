@@ -10,17 +10,18 @@ fi
 # I can't publish via API, but I can create a bundle for manual upload.
 
 VERSION=$1
-DOMAIN=io/github/andrewquijano
-PROJECT=drone_collision_avoidance
+GROUP_ID=io/github/andrewquijano
+# This needs to match name in settings.gradle
+PROJECT=drone-collision-avoidance
 
 # Use this script as a stop gap for manual uploading
-mkdir -p $DOMAIN/$PROJECT/$VERSION
-cp build/libs/* $DOMAIN/$PROJECT/$VERSION/
-cp build/publications/mavenJava/pom-default.xml $DOMAIN/$PROJECT/$VERSION/$PROJECT-$VERSION.pom
-cp build/publications/mavenJava/pom-default.xml.asc $DOMAIN/$PROJECT/$VERSION/$PROJECT-$VERSION.pom.asc
+mkdir -p $GROUP_ID/$PROJECT/$VERSION
+cp build/libs/* $GROUP_ID/$PROJECT/$VERSION/
+cp build/publications/mavenJava/pom-default.xml $GROUP_ID/$PROJECT/$VERSION/$PROJECT-$VERSION.pom
+cp build/publications/mavenJava/pom-default.xml.asc $GROUP_ID/$PROJECT/$VERSION/$PROJECT-$VERSION.pom.asc
 
 # Loop through all files in the specified directory
-for file in $DOMAIN/$PROJECT/$VERSION/*; do
+for file in $GROUP_ID/$PROJECT/$VERSION/*; do
   # Print the file being checked
   echo "Processing file: $file"
 
