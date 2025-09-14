@@ -5,10 +5,10 @@
 package edu.fiu.adwise.drone_collision_avoidance;
 
 import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
-import edu.fiu.adwise.homomorphic_encryption.dgk.DGKOperations;
-import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
-import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierCipher;
-import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.alice;
+import edu.fiu.adwise.ciphercraft.dgk.DGKOperations;
+import edu.fiu.adwise.ciphercraft.misc.HomomorphicException;
+import edu.fiu.adwise.ciphercraft.paillier.PaillierCipher;
+import edu.fiu.adwise.ciphercraft.socialistmillionaire.alice;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;

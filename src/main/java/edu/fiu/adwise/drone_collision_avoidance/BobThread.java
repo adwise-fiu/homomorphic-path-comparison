@@ -10,8 +10,8 @@ import java.net.Socket;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
-import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.bob;
+import edu.fiu.adwise.ciphercraft.misc.HomomorphicException;
+import edu.fiu.adwise.ciphercraft.socialistmillionaire.bob;
 
 /**
  * A thread that handles communication with Bob in a homomorphic encryption protocol.

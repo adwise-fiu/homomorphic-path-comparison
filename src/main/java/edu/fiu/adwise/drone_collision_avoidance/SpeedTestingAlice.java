@@ -8,8 +8,8 @@ import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
-import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.alice_joye;
+import edu.fiu.adwise.ciphercraft.misc.HomomorphicException;
+import edu.fiu.adwise.ciphercraft.socialistmillionaire.alice_joye;
 
 import java.io.*;
 import java.net.Socket;

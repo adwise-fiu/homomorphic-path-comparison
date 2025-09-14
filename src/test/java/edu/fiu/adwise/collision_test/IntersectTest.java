@@ -15,10 +15,10 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 
-import edu.fiu.adwise.homomorphic_encryption.dgk.DGKKeyPairGenerator;
-import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
-import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;
-import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.*;
+import edu.fiu.adwise.ciphercraft.dgk.DGKKeyPairGenerator;
+import edu.fiu.adwise.ciphercraft.misc.HomomorphicException;
+import edu.fiu.adwise.ciphercraft.paillier.PaillierKeyPairGenerator;
+import edu.fiu.adwise.ciphercraft.socialistmillionaire.*;
 
 import edu.fiu.adwise.drone_collision_avoidance.BobThread;
 import edu.fiu.adwise.drone_collision_avoidance.CleartextPathsComparison;

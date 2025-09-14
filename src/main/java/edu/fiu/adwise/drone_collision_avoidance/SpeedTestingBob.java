@@ -11,10 +11,10 @@ import java.security.KeyPair;
 import java.util.List;
 
 import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
-import edu.fiu.adwise.homomorphic_encryption.dgk.DGKKeyPairGenerator;
-import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
-import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;
-import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.bob_joye;
+import edu.fiu.adwise.ciphercraft.dgk.DGKKeyPairGenerator;
+import edu.fiu.adwise.ciphercraft.misc.HomomorphicException;
+import edu.fiu.adwise.ciphercraft.paillier.PaillierKeyPairGenerator;
+import edu.fiu.adwise.ciphercraft.socialistmillionaire.bob_joye;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
