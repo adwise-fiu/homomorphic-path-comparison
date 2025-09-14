@@ -26,7 +26,7 @@ java {
 
 dependencies {
     implementation 'junit:junit:4.13.2'
-    implementation 'io.github.andrewquijano:ciphercraft:1.0.6'
+    implementation 'io.github.andrewquijano:ciphercraft:1.0.7'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -164,7 +164,15 @@ publishing {
                         id.set('AndrewQuijano')
                         name.set('Andrew Quijano')
                         email.set('andrew.quijano@nyu.edu')
+                        roles.add('Lead Developer')
+                        organization.set('New York University')
+                        organizationUrl.set('https://www.nyu.edu')
                     }
+                }
+
+                organization {
+                    name.set('ADWISE Research Lab, Florida International University')
+                    url.set('https://adwise.fiu.edu/')
                 }
 
                 scm {
@@ -172,20 +180,6 @@ publishing {
                     developerConnection.set('scm:git:ssh://github.com:adwise-fiu/homomorphic-path-comparison.git')
                     url.set('https://github.com/adwise-fiu/homomorphic-path-comparison')
                 }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            name = "Sonatype"
-            url = version.endsWith("SNAPSHOT") ?
-                    uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") :
-                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-
-            credentials {
-                username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
-                password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
             }
         }
     }
@@ -198,7 +192,7 @@ signing {
     // Point to the key file on your machine, used for local testing
     def signingKeyFile = findProperty("signingKeyFile") ?: System.getenv("SIGNING_KEY_FILE")
     // gpg --armor --export-secret-keys YOUR_KEY_ID, export the key into a secret
-    def signingKey = findProperty("signingKey") ?: System.getenv("SIGNING_KEY") ?: ""
+    def signingKey = findProperty("signingKey") ?: System.getenv("SIGNING_KEY")
     // If no property or environment variable is found, it will be empty password
     def signingPassword = findProperty("signingPassword") ?: System.getenv("SIGNING_PASSWORD") ?: ""
 

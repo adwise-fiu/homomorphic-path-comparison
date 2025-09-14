@@ -30,6 +30,7 @@ jobs:
 
   upload_release:
     needs: [ create_release ]
+    if: github.repository == 'adwise-fiu/homomorphic-path-comparison'
     runs-on: ubuntu-latest
     permissions:
       contents: write

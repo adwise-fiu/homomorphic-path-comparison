@@ -20,11 +20,11 @@ import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
 import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;
 import edu.fiu.adwise.homomorphic_encryption.socialistmillionaire.*;
 
-import edu.fiu.adwise.BobThread;
-import edu.fiu.adwise.CleartextPathsComparison;
-import edu.fiu.adwise.EncryptedPathsComparison;
-import edu.fiu.adwise.shared;
-import edu.fiu.adwise.structs.BigIntPoint;
+import edu.fiu.adwise.drone_collision_avoidance.BobThread;
+import edu.fiu.adwise.drone_collision_avoidance.CleartextPathsComparison;
+import edu.fiu.adwise.drone_collision_avoidance.EncryptedPathsComparison;
+import edu.fiu.adwise.drone_collision_avoidance.shared;
+import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
 
 public class IntersectTest {
     private static final Logger logger = LogManager.getLogger(IntersectTest.class);

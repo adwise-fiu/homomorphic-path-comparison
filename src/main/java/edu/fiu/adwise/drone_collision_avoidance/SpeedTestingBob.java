@@ -2,7 +2,7 @@
  * Copyright (c) 2024 ADWISE Lab, Florida International University (FIU), AndrewQuijano
  * Licensed under the MIT License. See LICENSE file in the project root for details.
  */
-package edu.fiu.adwise;
+package edu.fiu.adwise.drone_collision_avoidance;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.security.KeyPair;
 import java.util.List;
 
-import edu.fiu.adwise.structs.BigIntPoint;
+import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
 import edu.fiu.adwise.homomorphic_encryption.dgk.DGKKeyPairGenerator;
 import edu.fiu.adwise.homomorphic_encryption.misc.HomomorphicException;
 import edu.fiu.adwise.homomorphic_encryption.paillier.PaillierKeyPairGenerator;

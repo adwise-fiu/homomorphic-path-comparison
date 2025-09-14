@@ -2,9 +2,9 @@
  * Copyright (c) 2024 ADWISE Lab, Florida International University (FIU), AndrewQuijano
  * Licensed under the MIT License. See LICENSE file in the project root for details.
  */
-package edu.fiu.adwise;
+package edu.fiu.adwise.drone_collision_avoidance;
 
-import edu.fiu.adwise.structs.BigIntPoint;
+import edu.fiu.adwise.drone_collision_avoidance.structs.BigIntPoint;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
